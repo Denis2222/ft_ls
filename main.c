@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:54:01 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/01/13 00:27:42 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/01/13 00:38:31 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	readopts(int ac, char **av, char *opts)
 		if (*av[i] == '-')
 		{
 			av[i]++;
+			if (*av[i] == '\0')
+				return (i);
 			while (strchr(args, *av[i]) && *av[i] != '\0')
 				opts[*(av[i]++)] = 1;
 			if (*av[i] == '-')
