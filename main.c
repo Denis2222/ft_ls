@@ -41,8 +41,10 @@ int	readopts(int ac, char **av, char *opts)
 
 int	main(int ac, char **av)
 {
-	char	*opts = ft_memalloc('z');
-	int		firstpath;
+	char			*opts = ft_memalloc('z');
+	int				firstpath;
+	DIR				*dirfd;
+	struct dirent	*ent;
 
 	if((firstpath = readopts(ac, av, opts)) < 1)
 	{
@@ -50,6 +52,16 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	printf("first path :%d \n", firstpath);
+
+	dirfd = opendir(".");
+	if (dirfd != NULL)
+	{
+		while ((ent = readdir (dirfd)))
+			puts (ent->d_name);
+		(void) closedir (dirfd);
+	}
+	else
+		perror ("Couldn't open the directory");
 
 	if (opts['l'])
 		puts("l donne");
