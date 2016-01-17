@@ -39,13 +39,20 @@ int	readopts(int ac, char **av, char *opts)
 	return (i);
 }
 
+int	printstat(struct stat filestat)
+{
+	printf("st_dev:%d st_uid:%d \n", filestat.st_dev, filestat.st_uid);
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	char			*opts = ft_memalloc('z');
 	int				firstpath;
 	DIR				*dirfd;
 	struct dirent	*ent;
-
+	struct stat		filestat;
+	
 	if((firstpath = readopts(ac, av, opts)) < 1)
 	{
 		puts("badarg");
@@ -53,11 +60,23 @@ int	main(int ac, char **av)
 	}
 	printf("first path :%d \n", firstpath);
 
-	dirfd = opendir(".");
+	dirfd = opendir(av[firstpath]);
 	if (dirfd != NULL)
 	{
 		while ((ent = readdir (dirfd)))
-			puts (ent->d_name);
+		{
+			ft_putstr(ent->d_name);
+			ft_putstr("(");
+			ft_putnbr(ent->d_type);
+			ft_putstr(")");
+			if (ent->d_type == 8)
+			{
+				lstat(ft_strjoin(av[firstpath], ent->d_name), &filestat);
+				printstat(filestat);
+			}
+			ft_putendl(" ");
+		}
+		ft_putendl("");
 		(void) closedir (dirfd);
 	}
 	else
