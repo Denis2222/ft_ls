@@ -1,6 +1,10 @@
 .PHONY: libft
 
-SRCS = main.c
+SRCS = main.c \
+	 opts.c \
+	 error.c \
+	 t_arg.c \
+	 dir.c
 
 NAME = ft_ls
 GCC_FLAG = -Wall -Werror -Wextra

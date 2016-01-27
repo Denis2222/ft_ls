@@ -6,91 +6,43 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:54:01 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/01/13 00:38:31 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/01/27 19:09:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int	readopts(int ac, char **av, char *opts)
-{
-	int	i;
-	const char *args = "lRart";
-
-	i = 1;
-	while (i < ac)
-	{
-		if (*av[i] == '-')
-		{
-			av[i]++;
-			if (*av[i] == '\0')
-				return (i);
-			while (strchr(args, *av[i]) && *av[i] != '\0')
-				opts[*(av[i]++)] = 1;
-			if (*av[i] == '-')
-				return (++i);
-			if (*av[i] != '\0')
-				return (-1);
-		}
-		else
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
-int	printstat(struct stat filestat)
-{
-	printf("st_dev:%d st_uid:%d \n", filestat.st_dev, filestat.st_uid);
-	return (0);
-}
-
 int	main(int ac, char **av)
 {
-	char			*opts = ft_memalloc('z');
+	t_ls			ls;
 	int				firstpath;
-	DIR				*dirfd;
-	struct dirent	*ent;
-	struct stat		filestat;
-	
-	if((firstpath = readopts(ac, av, opts)) < 1)
-	{
-		puts("badarg");
-		return (1);
-	}
-	printf("first path :%d \n", firstpath);
+	int				i;
 
-	dirfd = opendir(av[firstpath]);
-	if (dirfd != NULL)
-	{
-		while ((ent = readdir (dirfd)))
-		{
-			ft_putstr(ent->d_name);
-			ft_putstr("(");
-			ft_putnbr(ent->d_type);
-			ft_putstr(")");
-			if (ent->d_type == 8)
-			{
-				lstat(ft_strjoin(av[firstpath], ent->d_name), &filestat);
-				printstat(filestat);
-			}
-			ft_putendl(" ");
-		}
-		ft_putendl("");
-		(void) closedir (dirfd);
-	}
-	else
-		perror ("Couldn't open the directory");
+	ls.opts = ft_memalloc('z');
+	firstpath = readopts(ac, av, ls.opts);
+	parseargs(&ls, av, ac, firstpath);
+	viewarg(ls.args);
 
-	if (opts['l'])
+	while (ls.args)
+	{
+		printf("@");
+		listdir(ls.args->path);
+		ls.args = ls.args->next;
+	}
+
+/*
+	if (ls.opts['l'])
 		puts("l donne");
-	if (opts['r'])
+	if (ls.opts['r'])
 		puts("r donne");
-	if (opts['R'])
+	if (ls.opts['R'])
 		puts("R donne");
-	if (opts['a'])
+	if (ls.opts['a'])
 		puts("a donne");
-	if (opts['t'])
+	if (ls.opts['t'])
 		puts("t donne");
+*/
+
+//	sleep(100);
 	return (0);
 }
