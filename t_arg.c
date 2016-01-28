@@ -12,9 +12,12 @@
 
 #include "ft_ls.h"
 
-void    parseargs(t_ls *ls, char **av, int ac, int start)
+void    parseargs(t_ls *ls, char **av, int ac)
 {
-	while (start < ac)
+    int start;
+	ls->opts = ft_memalloc('z');
+	start = readopts(ac, av, ls->opts);
+    while (start < ac)
 	{
 		ls->args = addarg(&(ls->args), newarg(av[start]));
 		start++;
@@ -60,7 +63,6 @@ void    viewarg(t_arg *arg)
   marg = arg;
   while(marg)
   {
-    printf("[arg: %s] ", marg->path);
     marg = marg->next;
   }
 }

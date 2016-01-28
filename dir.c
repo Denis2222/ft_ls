@@ -30,28 +30,28 @@ void    listdir(char *dirpath)
 		while ((ent = readdir (dirfd)))
 		{
 			ft_putstr(ent->d_name);
-			ft_putstr("(");
-			ft_putnbr(ent->d_type);
-			ft_putstr(")");
+			//ft_putstr("(");
+			//ft_putnbr(ent->d_type);
+			//ft_putstr(")");
 			if (ent->d_type == 8)
 			{
 				//lstat(ft_strjoin(av[firstpath], ent->d_name), &filestat);
 				//printstat(filestat);
 			}
-			ft_putendl(" ");
+			ft_putendl("");
 		}
-		ft_putendl("");
+		//ft_putendl("");
 		(void) closedir (dirfd);
 	}
 	else
-    {
-        if(lstat(dirpath, &filestat) == 0)
 	{
-          printstat(filestat);
-        }
-        else
-        {
-          perror ("");
-        }
-    }
+		if(lstat(dirpath, &filestat) == 0)
+		{
+			printstat(filestat);
+		}
+		else
+		{
+			perror ("");
+		}
+	}
 }

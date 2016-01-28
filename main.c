@@ -14,35 +14,18 @@
 
 int	main(int ac, char **av)
 {
-	t_ls			ls;
-	int				firstpath;
-	int				i;
+	t_ls	ls;
 
-	ls.opts = ft_memalloc('z');
-	firstpath = readopts(ac, av, ls.opts);
-	parseargs(&ls, av, ac, firstpath);
-	viewarg(ls.args);
-
+	parseargs(&ls, av, ac);
+	//viewarg(ls.args);
 	while (ls.args)
 	{
-		printf("@");
+		//printf("@");
 		listdir(ls.args->path);
 		ls.args = ls.args->next;
 	}
-
-/*
-	if (ls.opts['l'])
-		puts("l donne");
-	if (ls.opts['r'])
-		puts("r donne");
-	if (ls.opts['R'])
-		puts("R donne");
-	if (ls.opts['a'])
-		puts("a donne");
-	if (ls.opts['t'])
-		puts("t donne");
-*/
-
-//	sleep(100);
+	
+	//viewopts(&ls);
+	//	sleep(100);
 	return (0);
 }

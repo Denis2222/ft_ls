@@ -25,10 +25,10 @@ $(NAME): $(OBJS)
 	$(CC) -o $@ $^ -Llibft -lft
 
 clean:
-	rm -f $(NAME)
 	rm -f $(OBJS)
 
 fclean: clean
+	rm -f $(NAME)
 	make -C libft/ fclean
 
 re: fclean all

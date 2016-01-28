@@ -24,7 +24,10 @@ int	readopts(int ac, char **av, char *opts)
 		{
 			av[i]++;
 			if (*av[i] == '\0')
+			{
+				av[i]--;
 				return (i);
+			}
 			while (strchr(args, *av[i]) && *av[i] != '\0')
 				opts[*(av[i]++)] = 1;
 			if (*av[i] == '-')
@@ -37,4 +40,18 @@ int	readopts(int ac, char **av, char *opts)
 		i++;
 	}
 	return (i);
+}
+
+void	viewopts(t_ls *ls)
+{
+	if (ls->opts['l'])
+		puts("l donne");
+	if (ls->opts['r'])
+		puts("r donne");
+	if (ls->opts['R'])
+		puts("R donne");
+	if (ls->opts['a'])
+		puts("a donne");
+	if (ls->opts['t'])
+		puts("t donne");
 }

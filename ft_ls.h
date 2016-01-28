@@ -35,13 +35,13 @@ typedef struct  s_ls
 {
   char          *opts;
   t_arg         *args;
-}               t_ls;
-
+}				t_ls;
 
 t_arg   *newarg(char *str);
 t_arg   *addarg(t_arg **lstarg, t_arg *arg);
-void    parseargs(t_ls *ls, char **av, int ac, int start);
+void    parseargs(t_ls *ls, char **av, int ac);
 void    viewarg(t_arg *arg);
 void    listdir(char *dirpath);
+void	viewopts(t_ls *ls);
 
 #endif
