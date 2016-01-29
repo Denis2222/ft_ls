@@ -3,7 +3,8 @@
 SRCS = main.c \
 	 opts.c \
 	 error.c \
-	 t_arg.c \
+	 args.c \
+	 ents.c \
 	 dir.c
 
 NAME = ft_ls

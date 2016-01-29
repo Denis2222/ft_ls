@@ -17,14 +17,13 @@ int	main(int ac, char **av)
 	t_ls	ls;
 
 	parseargs(&ls, av, ac);
-	//viewarg(ls.args);
+	printf("%d", ls.nbarg );
 	while (ls.args)
 	{
-		//printf("@");
-		listdir(ls.args->path);
+		listdir(ls.args);
 		ls.args = ls.args->next;
 	}
-	
+
 	//viewopts(&ls);
 	//	sleep(100);
 	return (0);

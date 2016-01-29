@@ -25,9 +25,16 @@
 void error(char *str, char c);
 int	readopts(int ac, char **av, char *opts);
 
+typedef struct  s_ent
+{
+  struct dirent *dirent;
+  struct s_ent  *next;
+}               t_ent;
+
 typedef struct  s_arg
 {
   char          *path;
+  t_ent         *ent;
   struct s_arg  *next;
 }               t_arg;
 
@@ -35,13 +42,19 @@ typedef struct  s_ls
 {
   char          *opts;
   t_arg         *args;
+  int           nbarg;
 }				t_ls;
+
 
 t_arg   *newarg(char *str);
 t_arg   *addarg(t_arg **lstarg, t_arg *arg);
 void    parseargs(t_ls *ls, char **av, int ac);
 void    viewarg(t_arg *arg);
-void    listdir(char *dirpath);
+int     arglen(t_arg *arg);
+void    listdir(t_arg *arg);
 void	viewopts(t_ls *ls);
 
+t_ent   *newent(struct dirent *dirent);
+t_ent   *addent(t_ent **lstent, t_ent *ent);
+int     entlen(t_ent *ent);
 #endif

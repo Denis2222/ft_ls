@@ -12,23 +12,26 @@
 
 #include "ft_ls.h"
 
-int	printstat(struct stat filestat)
+int	printstat(char *filepath, struct stat filestat)
 {
-	printf("st_dev:%d st_uid:%d \n", filestat.st_dev, filestat.st_uid);
+	printf("%s st_dev:%d st_uid:%d \n", filepath, filestat.st_dev, filestat.st_uid);
 	return (0);
 }
 
-void    listdir(char *dirpath)
+void    listdir(t_arg *arg)
 {
 	DIR				*dirfd;
 	struct dirent	*ent;
 	struct stat		filestat;
+	t_ent			*ment;
 
-	dirfd = opendir(dirpath);
+	dirfd = opendir(arg->path);
 	if (dirfd != NULL)
 	{
 		while ((ent = readdir (dirfd)))
 		{
+			ment = newent(ent);
+			arg->ent = addent(&(arg->ent), ment);
 			ft_putstr(ent->d_name);
 			//ft_putstr("(");
 			//ft_putnbr(ent->d_type);
@@ -40,14 +43,15 @@ void    listdir(char *dirpath)
 			}
 			ft_putendl("");
 		}
+		printf("ent in dir : %d ", entlen(arg->ent));
 		//ft_putendl("");
 		(void) closedir (dirfd);
 	}
 	else
 	{
-		if(lstat(dirpath, &filestat) == 0)
+		if(lstat(arg->path, &filestat) == 0)
 		{
-			printstat(filestat);
+			printstat(arg->path, filestat);
 		}
 		else
 		{
