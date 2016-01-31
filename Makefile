@@ -5,6 +5,8 @@ SRCS = main.c \
 	 error.c \
 	 args.c \
 	 ents.c \
+	 ls.c \
+	 file.c \
 	 dir.c
 
 NAME = ft_ls

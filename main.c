@@ -15,33 +15,46 @@
 int	main(int ac, char **av)
 {
 	t_ls	*ls;
-	t_arg	*firstarg;
-
-	ls = (t_ls*)malloc(sizeof(t_ls));
-	ls->opts = NULL;
-	ls->args = NULL;
-	ls->nbarg = 0;
+	t_arg	*args;
+	t_sfile	*files;
+	
+	ls = newls();
 	parseargs(ls, av, ac);
 	readargs(ls);
-	ls->args = sortargs(ls->args, &ft_strasc);
-	while (ls->args)
+	if (ls->files)
+		files = sortfiles(ls->files, &ft_strasc);
+	while (files)
 	{
-		if (ls->args->ent)
-			sortents(ls->args->ent, &ft_strasc);
-		while (ls->args->ent)
-		{
-			ft_putstr("\n result : ");
-			if (ls->args->ent)
-				ft_putstr(ls->args->ent->name);
-			//else
-				//ft_putstr(ls.args->path);
-			ls->args->ent = ls->args->ent->next;
-		}
-		ls->args = ls->args->next;
-		ft_putstr("\n next \n");
+		ft_putstr(files->path);
+		ft_putchar('\n');
+		if (!files->next)
+			ft_putchar('\n');
+		files = files->next;
 	}
-
-	//viewopts(&ls);
-	//sleep(100);
+	args = sortargs(ls->args, &ft_strasc);
+	while (args)
+	{
+		if (args->ent)
+		{
+			if (arglen(ls->args) > 1)
+			{
+				ft_putstr(args->path);
+				ft_putstr(":\n");
+			}
+			sortents(args->ent, &ft_strasc);
+			while (args->ent)
+			{
+				if (args->ent)
+				{
+					ft_putstr(args->ent->name);
+					ft_putchar('\n');
+				}
+				args->ent = args->ent->next;
+			}
+			if (args->next)
+				ft_putstr("\n");
+		}
+		args = args->next;
+	}
 	return (0);
 }

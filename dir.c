@@ -14,49 +14,39 @@
 
 int	printstat(char *filepath, struct stat filestat)
 {
-	printf("%s st_dev:%d st_uid:%d \n", filepath, filestat.st_dev, filestat.st_uid);
+	//printf("%s st_dev:%d st_uid:%d \n", filepath, filestat.st_dev, filestat.st_uid);
+	ft_putstr(filepath);
+	ft_putstr("\n");
 	return (0);
 }
 
-void    listdir(t_arg *arg)
+void	listdir(t_arg *arg, t_ls *ls)
 {
 	DIR				*dirfd;
 	struct dirent	*ent;
 	struct stat		filestat;
+	t_sfile			*file;
 	t_ent			*ment;
 
 	dirfd = opendir(arg->path);
 	if (dirfd != NULL)
 	{
-		while ((ent = readdir (dirfd)))
+		while ((ent = readdir(dirfd)))
 		{
-			//ft_putstr("\n");
 			ment = newent(ent);
 			arg->ent = addent(&(arg->ent), ment);
-			//ft_putstr(ent->d_name);
-			//ft_putstr("(");
-			//ft_putnbr(ent->d_type);
-			//ft_putstr(")");
-			//if (ent->d_type == 8)
-			//{
-				//lstat(ft_strjoin(av[firstpath], ent->d_name), &filestat);
-				//printstat(filestat);
-			//}
-			//ft_putendl("");
 		}
-		//printf("ent in dir : %d ", entlen(arg->ent));
-		//ft_putendl("");
-		(void) closedir (dirfd);
+		closedir(dirfd);
 	}
 	else
 	{
 		if(lstat(arg->path, &filestat) == 0)
 		{
-			printstat(arg->path, filestat);
+			file = newfile(arg->path);
+			ls->files = addfile(&ls->files, file);
+			//printstat(arg->path, filestat);
 		}
 		else
-		{
 			perror ("");
-		}
 	}
 }

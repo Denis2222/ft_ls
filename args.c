@@ -35,7 +35,7 @@ void	readargs(t_ls *ls)
 	arg = ls->args;
 	while (arg)
 	{
-		listdir(arg);
+		listdir(arg, ls);
 		arg = arg->next;
 	}
 }
@@ -113,13 +113,10 @@ t_arg	*sortargs(t_arg *lst, int (*cmp)(char *, char *))
 			{
 				tmpent = tmparg->ent;
 				tmpstr = tmparg->path;
-
 				tmparg->ent = tmparg->next->ent;
 				tmparg->path = tmparg->next->path;
-
 				tmparg->next->ent = tmpent;
 				tmparg->next->path = tmpstr;
-
 				tmparg = lst;
 			}
 	}
