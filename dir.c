@@ -30,20 +30,21 @@ void    listdir(t_arg *arg)
 	{
 		while ((ent = readdir (dirfd)))
 		{
+			//ft_putstr("\n");
 			ment = newent(ent);
 			arg->ent = addent(&(arg->ent), ment);
-			ft_putstr(ent->d_name);
+			//ft_putstr(ent->d_name);
 			//ft_putstr("(");
 			//ft_putnbr(ent->d_type);
 			//ft_putstr(")");
-			if (ent->d_type == 8)
-			{
+			//if (ent->d_type == 8)
+			//{
 				//lstat(ft_strjoin(av[firstpath], ent->d_name), &filestat);
 				//printstat(filestat);
-			}
-			ft_putendl("");
+			//}
+			//ft_putendl("");
 		}
-		printf("ent in dir : %d ", entlen(arg->ent));
+		//printf("ent in dir : %d ", entlen(arg->ent));
 		//ft_putendl("");
 		(void) closedir (dirfd);
 	}

@@ -28,6 +28,18 @@ void	parseargs(t_ls *ls, char **av, int ac)
 	ls->nbarg = arglen(ls->args);
 }
 
+void	readargs(t_ls *ls)
+{
+	t_arg	*arg;
+
+	arg = ls->args;
+	while (arg)
+	{
+		listdir(arg);
+		arg = arg->next;
+	}
+}
+
 t_arg	*newarg(char *str)
 {
 	t_arg *arg;
@@ -81,4 +93,35 @@ int	arglen(t_arg *arg)
 		marg = marg->next;
 	}
 	return (length);
+}
+
+t_arg	*sortargs(t_arg *lst, int (*cmp)(char *, char *))
+{
+	t_arg	*tmparg;
+	t_ent	*tmpent;
+	char	*tmpstr;
+
+	tmparg = lst;
+	while (tmparg->next)
+	{
+		if ((*cmp)(tmparg->path,
+			tmparg->next->path) <= 0)
+			{
+				tmparg = tmparg->next;
+			}
+			else
+			{
+				tmpent = tmparg->ent;
+				tmpstr = tmparg->path;
+
+				tmparg->ent = tmparg->next->ent;
+				tmparg->path = tmparg->next->path;
+
+				tmparg->next->ent = tmpent;
+				tmparg->next->path = tmpstr;
+
+				tmparg = lst;
+			}
+	}
+	return (lst);
 }

@@ -8,7 +8,7 @@ SRCS = main.c \
 	 dir.c
 
 NAME = ft_ls
-GCC_FLAG = -Wall -Werror -Wextra
+GCC_FLAG = -Wall -Werror -Wextra -g
 CC = gcc #$(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)

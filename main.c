@@ -14,17 +14,34 @@
 
 int	main(int ac, char **av)
 {
-	t_ls	ls;
+	t_ls	*ls;
+	t_arg	*firstarg;
 
-	parseargs(&ls, av, ac);
-	printf("%d", ls.nbarg );
-	while (ls.args)
+	ls = (t_ls*)malloc(sizeof(t_ls));
+	ls->opts = NULL;
+	ls->args = NULL;
+	ls->nbarg = 0;
+	parseargs(ls, av, ac);
+	readargs(ls);
+	ls->args = sortargs(ls->args, &ft_strasc);
+	while (ls->args)
 	{
-		listdir(ls.args);
-		ls.args = ls.args->next;
+		if (ls->args->ent)
+			sortents(ls->args->ent, &ft_strasc);
+		while (ls->args->ent)
+		{
+			ft_putstr("\n result : ");
+			if (ls->args->ent)
+				ft_putstr(ls->args->ent->name);
+			//else
+				//ft_putstr(ls.args->path);
+			ls->args->ent = ls->args->ent->next;
+		}
+		ls->args = ls->args->next;
+		ft_putstr("\n next \n");
 	}
 
 	//viewopts(&ls);
-	//	sleep(100);
+	//sleep(100);
 	return (0);
 }

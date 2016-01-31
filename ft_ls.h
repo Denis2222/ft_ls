@@ -28,6 +28,7 @@ int	readopts(int ac, char **av, char *opts);
 typedef struct  s_ent
 {
   struct dirent *dirent;
+  char          *name;
   struct s_ent  *next;
 }               t_ent;
 
@@ -49,6 +50,7 @@ typedef struct  s_ls
 t_arg   *newarg(char *str);
 t_arg   *addarg(t_arg **lstarg, t_arg *arg);
 void    parseargs(t_ls *ls, char **av, int ac);
+void    readargs(t_ls *ls);
 void    viewarg(t_arg *arg);
 int     arglen(t_arg *arg);
 void    listdir(t_arg *arg);
@@ -56,5 +58,9 @@ void	viewopts(t_ls *ls);
 
 t_ent   *newent(struct dirent *dirent);
 t_ent   *addent(t_ent **lstent, t_ent *ent);
+t_ent   *sortents(t_ent *ent, int(*cmp)(char *, char *));
+t_arg	*sortargs(t_arg *lst, int(*cmp)(char *, char *));
+int	    ft_strasc(char *s1, char *s2);
+int	    ft_strdec(char *s1, char *s2);
 int     entlen(t_ent *ent);
 #endif
