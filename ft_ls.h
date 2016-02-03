@@ -78,4 +78,8 @@ int      filelen(t_sfile *file);
 
 int	    ft_strasc(char *s1, char *s2);
 int	    ft_strdec(char *s1, char *s2);
+
+void	print_files(t_ls *ls);
+void	print_args(t_ls *ls);
+
 #endif

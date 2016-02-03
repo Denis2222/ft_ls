@@ -12,49 +12,53 @@
 
 #include "ft_ls.h"
 
-int	main(int ac, char **av)
+t_arg	*recurse(t_ls *ls)
 {
-	t_ls	*ls;
 	t_arg	*args;
-	t_sfile	*files;
-	
-	ls = newls();
-	parseargs(ls, av, ac);
-	readargs(ls);
-	if (ls->files)
-		files = sortfiles(ls->files, &ft_strasc);
-	while (files)
-	{
-		ft_putstr(files->path);
-		ft_putchar('\n');
-		if (!files->next)
-			ft_putchar('\n');
-		files = files->next;
-	}
-	args = sortargs(ls->args, &ft_strasc);
+	t_arg	*begin;
+	t_ent	*ent;
+
+	begin = ls->args;
+	args = ls->args;
 	while (args)
 	{
 		if (args->ent)
 		{
-			if (arglen(ls->args) > 1)
+			ent = args->ent;
+			sortents(ent, &ft_strasc);
+			while (ent)
 			{
-				ft_putstr(args->path);
-				ft_putstr(":\n");
-			}
-			sortents(args->ent, &ft_strasc);
-			while (args->ent)
-			{
-				if (args->ent)
+				if (!ft_strequ(ent->name,".") && !ft_strequ(ent->name,".."))
 				{
-					ft_putstr(args->ent->name);
-					ft_putchar('\n');
+					if (ent->dirent->d_type == 4)
+					{
+						ft_putstr(args->path);
+						ft_putchar('/');
+						ft_putstr(ent->name);
+						ft_putchar('\n');
+					}
 				}
-				args->ent = args->ent->next;
+				ent = ent->next;
 			}
-			if (args->next)
-				ft_putstr("\n");
 		}
 		args = args->next;
 	}
+	ls->args = begin;
+	return (begin);
+}
+
+int	main(int ac, char **av)
+{
+	t_ls	*ls;
+	t_arg	*args;
+
+	ls = newls();
+	parseargs(ls, av, ac);
+	readargs(ls);
+	ls->args = sortargs(ls->args, &ft_strasc);
+	if (ls->opts['R'])
+		ls->args = recurse(ls);
+	print_files(ls);
+	print_args(ls);
 	return (0);
 }

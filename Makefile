@@ -7,6 +7,7 @@ SRCS = main.c \
 	 ents.c \
 	 ls.c \
 	 file.c \
+	 print.c \
 	 dir.c
 
 NAME = ft_ls
