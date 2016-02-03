@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/03 17:18:02 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/03 19:05:13 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,19 @@ void	listdir(t_arg *arg, t_ls *ls)
 	{
 		while ((ent = readdir(dirfd)))
 		{
-			ment = newent(ent);
-			arg->ent = addent(&(arg->ent), ment);
-			if (!ft_strequ(ent->d_name,".") && !ft_strequ(ent->d_name,".."))
+			if ((ent->d_name[0] == '.' && ls->opts['a']) || ent->d_name[0] != '.')
 			{
-				if (ent->d_type == 4 && ls->opts['R'])
+				if (lstat(ft_strjoin(arg->path, ft_strjoin("/", ent->d_name)), &filestat) == 0)
 				{
-					arg->sub = addarg(&arg->sub, newarg(ft_strjoin(arg->path,ft_strjoin("/", ment->name))));
+					ment = newent(ent, &filestat);
+					arg->ent = addent(&(arg->ent), ment);
+					if (!ft_strequ(ent->d_name,".") && !ft_strequ(ent->d_name,".."))
+					{
+						if (ent->d_type == 4 && ls->opts['R'])
+						{
+							arg->sub = addarg(&arg->sub, newarg(ft_strjoin(arg->path,ft_strjoin("/", ment->name))));
+						}
+					}
 				}
 			}
 		}

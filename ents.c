@@ -1,12 +1,13 @@
 #include "ft_ls.h"
 
-t_ent	*newent(struct dirent *dirent)
+t_ent	*newent(struct dirent *dirent, struct stat *filestat)
 {
 	t_ent	*ent;
 
 	ent = (t_ent *)malloc(sizeof(t_ent));
 	ent->dirent = dirent;
 	ent->name = ft_strdup(dirent->d_name);
+	ent->mtime = filestat->st_mtimespec.tv_sec;
 	ent->next = NULL;
 	return (ent);
 }

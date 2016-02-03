@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/03 17:17:54 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/03 20:01:05 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <pwd.h>
+# include <grp.h>
 # include <uuid/uuid.h>
 # include <sys/xattr.h>
 # include <errno.h>
@@ -30,6 +31,7 @@ typedef struct  s_ent
 {
   struct dirent *dirent;
   char          *name;
+  time_t        mtime;
   struct s_ent  *next;
 }               t_ent;
 
@@ -69,7 +71,7 @@ int     arglen(t_arg *arg);
 void    listdir(t_arg *arg, t_ls *ls);
 void	viewopts(t_ls *ls);
 
-t_ent   *newent(struct dirent *dirent);
+t_ent   *newent(struct dirent *dirent, struct stat *filestat);
 t_ent   *addent(t_ent **lstent, t_ent *ent);
 t_ent   *sortents(t_ent *ent, int(*cmp)(char *, char *));
 int     entlen(t_ent *ent);

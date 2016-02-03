@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:54:01 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/03 16:59:21 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/03 18:26:45 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int ac, char **av)
 	t_arg	*args;
 
 	ls = newls();
-	ls->debug = 1;
+	ls->debug = 0;
 	parseargs(ls, av, ac);
 	readargs(ls->args, ls);
 	if (ls->debug && ls->args)
