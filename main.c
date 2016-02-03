@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:54:01 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/01/27 19:09:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/03 16:59:21 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,19 @@ int	main(int ac, char **av)
 	t_arg	*args;
 
 	ls = newls();
+	ls->debug = 1;
 	parseargs(ls, av, ac);
-	readargs(ls);
+	readargs(ls->args, ls);
+	if (ls->debug && ls->args)
+	{
+		ft_putstr("#viewargs:[");
+		viewarg(ls->args);
+		ft_putendl(" ");
+	}
 	ls->args = sortargs(ls->args, &ft_strasc);
 	if (ls->opts['R'])
 		ls->args = recurse(ls);
 	print_files(ls);
-	print_args(ls);
+	print_args(ls->args, ls);
 	return (0);
 }

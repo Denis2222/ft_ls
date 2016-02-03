@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/01/27 19:26:51 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/03 17:18:02 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,21 @@ void	listdir(t_arg *arg, t_ls *ls)
 		{
 			ment = newent(ent);
 			arg->ent = addent(&(arg->ent), ment);
+			if (!ft_strequ(ent->d_name,".") && !ft_strequ(ent->d_name,".."))
+			{
+				if (ent->d_type == 4 && ls->opts['R'])
+				{
+					arg->sub = addarg(&arg->sub, newarg(ft_strjoin(arg->path,ft_strjoin("/", ment->name))));
+				}
+			}
 		}
 		closedir(dirfd);
 	}
 	else
 	{
-		if(lstat(arg->path, &filestat) == 0)
+		if(errno == EACCES)
+			ft_putstr("permission denied");
+		else if(lstat(arg->path, &filestat) == 0)
 		{
 			file = newfile(arg->path);
 			ls->files = addfile(&ls->files, file);

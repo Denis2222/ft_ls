@@ -9,5 +9,6 @@ t_ls *newls(void)
 	ls->args = NULL;
 	ls->files = NULL;
 	ls->nbarg = 0;
+	ls->debug = 0;
 	return (ls);
 }

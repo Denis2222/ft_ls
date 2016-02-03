@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/01/27 19:04:27 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/03 17:17:54 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <pwd.h>
 # include <uuid/uuid.h>
 # include <sys/xattr.h>
+# include <errno.h>
 # include <time.h>
 # include "libft/libft.h"
 
@@ -42,6 +43,7 @@ typedef struct  s_arg
 {
   char          *path;
   t_ent         *ent;
+  struct s_arg  *sub;
   struct s_arg  *next;
 }               t_arg;
 
@@ -51,6 +53,7 @@ typedef struct  s_ls
   t_arg         *args;
   t_sfile       *files;
   int           nbarg;
+  int           debug;
 }				t_ls;
 
 t_ls    *newls(void);
@@ -60,7 +63,7 @@ t_arg   *addarg(t_arg **lstarg, t_arg *arg);
 t_arg	*sortargs(t_arg *lst, int(*cmp)(char *, char *));
 void    viewarg(t_arg *arg);
 void    parseargs(t_ls *ls, char **av, int ac);
-void    readargs(t_ls *ls);
+void    readargs(t_arg *arg, t_ls *ls);
 int     arglen(t_arg *arg);
 
 void    listdir(t_arg *arg, t_ls *ls);
@@ -80,6 +83,6 @@ int	    ft_strasc(char *s1, char *s2);
 int	    ft_strdec(char *s1, char *s2);
 
 void	print_files(t_ls *ls);
-void	print_args(t_ls *ls);
+void	print_args(t_arg *args, t_ls *ls);
 
 #endif

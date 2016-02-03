@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 17:44:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/01/27 18:57:50 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/03 17:03:15 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	parseargs(t_ls *ls, char **av, int ac)
 {
 	int start;
 
+	if (ls->debug)
+		ft_putendl("#parseargs");
 	ls->opts = ft_memalloc('z');
 	start = readopts(ac, av, ls->opts);
 	if (start == ac)
@@ -28,14 +30,18 @@ void	parseargs(t_ls *ls, char **av, int ac)
 	ls->nbarg = arglen(ls->args);
 }
 
-void	readargs(t_ls *ls)
+void	readargs(t_arg *args, t_ls *ls)
 {
 	t_arg	*arg;
 
-	arg = ls->args;
+	if (ls->debug)
+		ft_putendl("#readargs");
+	arg = args;
 	while (arg)
 	{
 		listdir(arg, ls);
+		if (ls->opts['R'] && arg->sub)
+			readargs(arg->sub, ls);
 		arg = arg->next;
 	}
 }
@@ -47,6 +53,7 @@ t_arg	*newarg(char *str)
 	arg = (t_arg*)malloc(sizeof(t_arg));
 	arg->path = str;
 	arg->ent = NULL;
+	arg->sub = NULL;
 	arg->next = NULL;
 	return (arg);
 }
@@ -75,9 +82,16 @@ void	viewarg(t_arg *arg)
 	marg = arg;
 	while(marg)
 	{
-		printf("[%s]", marg->path);
+		ft_putstr(marg->path);
+		if (marg->sub)
+		{
+			ft_putstr("$sub:");
+			viewarg(marg->sub);
+		}
+		ft_putchar(' ');
 		marg = marg->next;
 	}
+	ft_putstr("]");
 }
 
 int	arglen(t_arg *arg)
@@ -90,6 +104,7 @@ int	arglen(t_arg *arg)
 	while (marg)
 	{
 		length++;
+		length += arglen(marg->sub);
 		marg = marg->next;
 	}
 	return (length);

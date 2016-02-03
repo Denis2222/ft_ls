@@ -21,30 +21,32 @@ void	print_files(t_ls *ls)
 	}
 }
 
-void	print_args(t_ls *ls)
+void	print_args(t_arg *args, t_ls *ls)
 {
-	t_arg	*args;
+	t_arg *arg;
 
-	args = ls->args;
-	while (args)
+	arg = args;
+	while (arg)
 	{
-		if (args->ent)
+		if (arg->ent)
 		{
 			if (arglen(ls->args) > 1)
 			{
-				ft_putstr(args->path);
+				ft_putstr(arg->path);
 				ft_putstr(":\n");
 			}
-			sortents(args->ent, &ft_strasc);
-			while (args->ent)
+			sortents(arg->ent, &ft_strasc);
+			while (arg->ent)
 			{
-				ft_putstr(args->ent->name);
+				ft_putstr(arg->ent->name);
 				ft_putchar('\n');
-				args->ent = args->ent->next;
+				arg->ent = arg->ent->next;
 			}
-			if (args->next && args->next->ent)
+			if (arg->next && arg->next->ent)
 				ft_putstr("\n");
 		}
-		args = args->next;
+		if (arg->sub)
+			print_args(arg->sub, ls);
+		arg = arg->next;
 	}
 }
