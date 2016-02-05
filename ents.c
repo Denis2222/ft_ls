@@ -86,10 +86,10 @@ t_ent	*sortents(t_ent *lst, int (*cmp)(char *, char *))
 
 				tmp->dirent = tmp->next->dirent;
 				tmp->name = tmp->next->name;
-				
+
 				tmp->next->dirent = tmpdirent;
 				tmp->next->name = tmpstr;
-				
+
 				tmp = lst;
 			}
 	}

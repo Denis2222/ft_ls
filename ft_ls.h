@@ -27,6 +27,15 @@
 void error(char *str, char c);
 int	readopts(int ac, char **av, char *opts);
 
+typedef struct  s_column
+{
+    int         link;
+    int         user;
+    int         group;
+    int         size;
+    int         block;
+}               t_column;
+
 typedef struct  s_ent
 {
   struct dirent *dirent;
