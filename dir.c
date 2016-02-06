@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/03 19:05:13 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 12:54:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,32 @@ int	printstat(char *filepath, struct stat filestat)
 	ft_putstr(filepath);
 	ft_putstr("\n");
 	return (0);
+}
+
+void	listfiles(t_arg *arg, t_ls *ls)
+{
+	DIR	*dirfd;
+	struct stat		filestat;
+	t_ent			*file;
+
+	dirfd = opendir(arg->path);
+	if (dirfd == NULL && errno != EACCES)
+	{
+		if (lstat(arg->path, &filestat) == 0)
+		{
+			file = newent(arg->path, &filestat);
+			ls->files = addent(&ls->files , file);
+		}
+		else
+		{
+			perror ("");
+		}
+	}
+	else
+	{
+		if (errno == 0)
+			closedir(dirfd);
+	}
 }
 
 void	listdir(t_arg *arg, t_ls *ls)
@@ -54,14 +80,8 @@ void	listdir(t_arg *arg, t_ls *ls)
 	else
 	{
 		if(errno == EACCES)
-			ft_putstr("permission denied");
-		else if(lstat(arg->path, &filestat) == 0)
 		{
-			file = newent(arg->path, &filestat);
-			ls->files = addent(&ls->files, file);
-			//printstat(arg->path, filestat);
+			arg->deny = 1;
 		}
-		else
-			perror ("");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/03 20:01:05 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 13:58:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct  s_arg
   char          *path;
   t_ent         *ent;
   struct s_arg  *sub;
+  int           deny;
   struct s_arg  *next;
 }               t_arg;
 
@@ -64,7 +65,7 @@ typedef struct  s_ls
   t_arg         *args;
   t_ent       *files;
   int           nbarg;
-  int           debug;
+  int           out;
 }				t_ls;
 
 t_ls    *newls(void);
@@ -73,10 +74,12 @@ t_arg   *newarg(char *str);
 t_arg   *addarg(t_arg **lstarg, t_arg *arg);
 t_arg	*sortargs(t_arg *lst, int(*cmp)(char *, char *));
 void    viewarg(t_arg *arg);
-void    parseargs(t_ls *ls, char **av, int ac);
+void    setupls(t_ls *ls, char **av, int ac);
 void    readargs(t_arg *arg, t_ls *ls);
+void    readfiles(t_arg *arg, t_ls *ls);
 int     arglen(t_arg *arg);
 
+void    listfiles(t_arg *arg, t_ls *ls);
 void    listdir(t_arg *arg, t_ls *ls);
 void	viewopts(t_ls *ls);
 
@@ -93,8 +96,13 @@ int      filelen(t_sfile *file);
 int	    ft_strasc(char *s1, char *s2);
 int	    ft_strdec(char *s1, char *s2);
 
-void	print_files(t_ls *ls);
 void	print_args(t_arg *args, t_ls *ls);
-void	print_ents(char *path, t_ent *ent, t_ls *ls);
+void	print_ents(char *path, t_ent *ent, t_ls *ls, int type);
+void	ft_putstrn(char *str, int n, int s);
+char	*ctimetols(char *time);
+
+char mode(mode_t st_mode);
+char *modetostr(mode_t st_mode);
+
 
 #endif

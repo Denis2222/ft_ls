@@ -1,127 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
+/*   Updated: 2016/02/06 13:35:56 by dmoureu-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-void	print_files(t_ls *ls)
-{
-	t_ent	*files;
-
-	if (ls->files)
-	{
-		files = sortents(ls->files, &ft_strasc);
-		while (files)
-		{
-			if (files->name)
-			{
-				ft_putstr(files->name);
-				ft_putchar('\n');
-				if (!files->next)
-					ft_putchar('\n');
-				files = files->next;
-			}
-		}
-	}
-}
-
-char mode(mode_t st_mode)
-{
-	if ((st_mode & S_IFMT) == S_IFDIR)
-		return('d');
-	else if ((st_mode & S_IFMT) == S_IFBLK)
-		return('b');
-	else if ((st_mode & S_IFMT) == S_IFIFO)
-		return('p');
-	else if ((st_mode & S_IFMT) == S_IFCHR)
-		return('c');
-	else if ((st_mode & S_IFMT) == S_IFLNK)
-		return('l');
-	else if ((st_mode & S_IFMT) == S_IFSOCK)
-		return('s');
-	else
-		return('-');
-}
-
-char *modetostr(mode_t st_mode)
-{
-	char *str;
-
-	str = (char*)malloc(sizeof(char) * 11);
-	ft_memset(str, '-', 10);
-	str[10] = '\0';
-	str[0] = mode(st_mode);
-	if (st_mode & S_IRUSR)
-		str[1] = 'r';
-	if (st_mode & S_IWUSR)
-		str[2] = 'w';
-	if (st_mode & S_IXUSR)
-		str[3] = 'x';
-	if (st_mode & S_IRGRP)
-		str[4] = 'r';
-	if (st_mode & S_IWGRP)
-		str[5] = 'w';
-	if (st_mode & S_IXGRP)
-		str[6] = 'x';
-	if (st_mode & S_IROTH)
-		str[7] = 'r';
-	if (st_mode & S_IWOTH)
-		str[8] = 'w';
-	if (st_mode & S_IXOTH)
-		str[9] = 'x';
-	return (str);
-}
-
-void	ft_putstrn(char *str, int n, int s)
-{
-	int		length;
-	char	*newstr;
-	int		i;
-
-	i = 0;
-	newstr = (char *)malloc(sizeof(char) * n + 1);
-	if (s)
-	{
-		length = n - ft_strlen(str);
-		while (i < length)
-		{
-			newstr[i] = ' ';
-			i++;
-		}
-		newstr[i] = '\0';
-		newstr = ft_strcat(newstr, str);
-	}
-	else
-	{
-		i = ft_strlen(str);
-		ft_strcpy(newstr, str);
-		while (i < n)
-		{
-			newstr[i] = ' ';
-			i++;
-		}
-		newstr[i] = '\0';
-	}
-	ft_putstr(newstr);
-	free(newstr);
-}
-
-char	*ctimetols(char *time)
-{
-	char	*str;
-	char	**tab;
-	char	**tabh;
-
-	tab = ft_strsplit(time, ' ');
-	tabh = ft_strsplit(tab[3], ':');
-	str = (char *)malloc(sizeof(char) * 20);
-	str = ft_strcat(str, tab[2]);
-	str = ft_strcat(str, " ");
-	str = ft_strcat(str, tab[1]);
-	str = ft_strcat(str, " ");
-	str = ft_strcat(str, tabh[0]);
-	str = ft_strcat(str, ":");
-	str = ft_strcat(str, tabh[1]);
-	return (str);
-}
-
-void	print_ents(char *path, t_ent *ent, t_ls *ls)
+void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 {
 	struct stat	filestat;
 	t_ent		*sent;
@@ -132,6 +23,7 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls)
 	col.group = 0;
 	col.size = 0;
 	col.block = 0;
+	
 	if (ent)
 	{
 		if (!ls->opts['l'])
@@ -168,9 +60,12 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls)
 				}
 				ent = ent->next;
 			}
-			ft_putstr("total ");
-			ft_putnbr(col.block);
-			ft_putendl("");
+			if (type)
+			{
+				ft_putstr("total ");
+				ft_putnbr(col.block);
+				ft_putendl("");
+			}
 			ent = sent;
 			while(ent)
 			{
@@ -192,7 +87,7 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls)
 					ft_putchar(' ');
 					ft_putstrn(ft_itoa(filestat.st_size), col.size , 1);
 					ft_putchar(' ');
-					ft_putstrn(ctimetols(ctime(&filestat.st_mtimespec.tv_sec)), 12, 1);
+					ft_putstrn(ctimetols(ctime(&filestat.st_mtimespec.tv_sec)), 11, 1);
 					ft_putchar(' ');
 					ft_putstr(ent->name);
 					ft_putchar('\n');
@@ -200,6 +95,7 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls)
 				ent = ent->next;
 			}
 		}
+		ls->out++;
 	}
 }
 
@@ -210,17 +106,31 @@ void	print_args(t_arg *args, t_ls *ls)
 	arg = args;
 	while (arg)
 	{
+		if (arg->deny)
+		{
+			if (ls->out > 0)
+				ft_putendl("");
+			if ((arglen(ls->args) > 1 || ls->out > 0))
+			{
+				ft_putstr(arg->path);
+				ft_putstr(":\n");
+			}
+			ft_putstr_fd("ls :", 2);
+			ft_putstr_fd(arg->path, 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd("Permission denied", 2);
+		}
 		if (arg->ent)
 		{
-			if (arglen(ls->args) > 1)
+			if (ls->out > 0)
+				ft_putendl("");
+			if ((arglen(ls->args) > 1 || ls->out > 0))
 			{
 				ft_putstr(arg->path);
 				ft_putstr(":\n");
 			}
 			sortents(arg->ent, &ft_strasc);
-			print_ents(arg->path, arg->ent, ls);
-			if (arg->next && arg->next->ent)
-				ft_putstr("\n");
+			print_ents(arg->path, arg->ent, ls, 1);
 		}
 		if (arg->sub)
 			print_args(arg->sub, ls);

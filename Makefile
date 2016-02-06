@@ -8,6 +8,7 @@ SRCS = main.c \
 	 ls.c \
 	 file.c \
 	 print.c \
+	 tools.c \
 	 dir.c
 
 NAME = ft_ls
