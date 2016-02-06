@@ -33,7 +33,7 @@ void	setupls(t_ls *ls, char **av, int ac)
 	{
 		ls->sort_time = &ft_timedec;
 	}
-	else if (ls->opts['r'])
+	if (ls->opts['r'])
 	{
 		ls->sort_alpha = &ft_strdec;
 	}

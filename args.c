@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 17:44:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 17:06:32 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 18:05:01 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	readfiles(t_arg *args, t_ls *ls)
 		listfiles(arg, ls);
 		arg = arg->next;
 	}
+	if (ls->sort_time)
+		sortentstime(ls->files, ls->sort_time);
 	print_ents(".", ls->files, ls, 0);
 }
 
@@ -30,7 +32,16 @@ void	readargs(t_arg *args, t_ls *ls)
 	t_arg	*arg;
 
 	arg = args;
+	
+	while (arg)
+	{
+		timedir(arg, ls);
+		arg = arg->next;
+	}
+	arg = args;
 	sortargs(arg, ls->sort_alpha);
+	if (ls->sort_time)
+		sortargstime(arg, ls->sort_time);
 	while (arg)
 	{
 		listdir(arg, ls);

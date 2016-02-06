@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 16:33:55 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 18:02:15 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ char	*ctimetols(char *time);
 char mode(mode_t st_mode);
 char *modetostr(mode_t st_mode);
 
+void	timedir(t_arg *arg, t_ls *ls);
 
 #endif

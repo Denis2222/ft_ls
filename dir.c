@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 15:42:04 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 18:01:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,3 +80,18 @@ void	listdir(t_arg *arg, t_ls *ls)
 		}
 	}
 }
+
+void	timedir(t_arg *arg, t_ls *ls)
+{
+	DIR				*dirfd;
+	struct stat		filestat;
+
+	dirfd = opendir(arg->path);
+	if (dirfd != NULL)
+	{
+		if (lstat(arg->path, &filestat) == 0)
+			arg->mtime = filestat.st_mtimespec.tv_sec;
+		closedir(dirfd);
+	}
+}
+
