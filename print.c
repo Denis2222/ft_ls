@@ -2,16 +2,16 @@
 
 void	print_files(t_ls *ls)
 {
-	t_sfile	*files;
+	t_ent	*files;
 
 	if (ls->files)
 	{
-		files = sortfiles(ls->files, &ft_strasc);
+		files = sortents(ls->files, &ft_strasc);
 		while (files)
 		{
-			if (files->path)
+			if (files->name)
 			{
-				ft_putstr(files->path);
+				ft_putstr(files->name);
 				ft_putchar('\n');
 				if (!files->next)
 					ft_putchar('\n');
@@ -195,8 +195,6 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls)
 					ft_putstrn(ctimetols(ctime(&filestat.st_mtimespec.tv_sec)), 12, 1);
 					ft_putchar(' ');
 					ft_putstr(ent->name);
-					stat(ft_strjoin(path, ft_strjoin("/", ent->name)), &filestat);
-					ft_putstr(filestat.d_name);
 					ft_putchar('\n');
 				}
 				ent = ent->next;

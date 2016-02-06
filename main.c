@@ -21,14 +21,9 @@ int	main(int ac, char **av)
 	ls->debug = 0;
 	parseargs(ls, av, ac);
 	readargs(ls->args, ls);
-	if (ls->debug && ls->args)
-	{
-		ft_putstr("#viewargs:[");
-		viewarg(ls->args);
-		ft_putendl(" ");
-	}
 	ls->args = sortargs(ls->args, &ft_strasc);
-	print_files(ls);
+
+	print_ents("", ls->files, ls);
 	print_args(ls->args, ls);
 	return (0);
 }

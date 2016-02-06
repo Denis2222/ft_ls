@@ -62,7 +62,7 @@ typedef struct  s_ls
 {
   char          *opts;
   t_arg         *args;
-  t_sfile       *files;
+  t_ent       *files;
   int           nbarg;
   int           debug;
 }				t_ls;
@@ -80,7 +80,7 @@ int     arglen(t_arg *arg);
 void    listdir(t_arg *arg, t_ls *ls);
 void	viewopts(t_ls *ls);
 
-t_ent   *newent(struct dirent *dirent, struct stat *filestat);
+t_ent   *newent(char *name, struct stat *filestat);
 t_ent   *addent(t_ent **lstent, t_ent *ent);
 t_ent   *sortents(t_ent *ent, int(*cmp)(char *, char *));
 int     entlen(t_ent *ent);
@@ -95,5 +95,6 @@ int	    ft_strdec(char *s1, char *s2);
 
 void	print_files(t_ls *ls);
 void	print_args(t_arg *args, t_ls *ls);
+void	print_ents(char *path, t_ent *ent, t_ls *ls);
 
 #endif

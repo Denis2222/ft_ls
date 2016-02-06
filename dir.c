@@ -25,7 +25,7 @@ void	listdir(t_arg *arg, t_ls *ls)
 	DIR				*dirfd;
 	struct dirent	*ent;
 	struct stat		filestat;
-	t_sfile			*file;
+	t_ent			*file;
 	t_ent			*ment;
 
 	dirfd = opendir(arg->path);
@@ -37,7 +37,7 @@ void	listdir(t_arg *arg, t_ls *ls)
 			{
 				if (lstat(ft_strjoin(arg->path, ft_strjoin("/", ent->d_name)), &filestat) == 0)
 				{
-					ment = newent(ent, &filestat);
+					ment = newent(ent->d_name, &filestat);
 					arg->ent = addent(&(arg->ent), ment);
 					if (!ft_strequ(ent->d_name,".") && !ft_strequ(ent->d_name,".."))
 					{
@@ -57,8 +57,8 @@ void	listdir(t_arg *arg, t_ls *ls)
 			ft_putstr("permission denied");
 		else if(lstat(arg->path, &filestat) == 0)
 		{
-			file = newfile(arg->path);
-			ls->files = addfile(&ls->files, file);
+			file = newent(arg->path, &filestat);
+			ls->files = addent(&ls->files, file);
 			//printstat(arg->path, filestat);
 		}
 		else
