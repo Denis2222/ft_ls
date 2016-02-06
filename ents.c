@@ -44,26 +44,6 @@ int	entlen(t_ent *ent)
 	return (length);
 }
 
-int	ft_strasc(char *s1, char *s2)
-{
-	int x;
-
-	x = 0;
-	while (s1[x] == s2[x] && s1[x] != '\0' && s2[x] != '\0')
-		x++;
-	return ((unsigned char)s1[x] - (unsigned char)s2[x]);
-}
-
-int	ft_strdec(char *s1, char *s2)
-{
-	int x;
-
-	x = 0;
-	while (s1[x] == s2[x] && s1[x] != '\0' && s2[x] != '\0')
-		x++;
-	return ((unsigned char)s2[x] - (unsigned char)s1[x]);
-}
-
 t_ent	*sortents(t_ent *lst, int (*cmp)(char *, char *))
 {
 	t_ent	*tmp;
@@ -89,3 +69,30 @@ t_ent	*sortents(t_ent *lst, int (*cmp)(char *, char *))
 	lst = tmp;
 	return (lst);
 }
+
+t_ent	*sortentstime(t_ent *lst, int (*cmp)(time_t, time_t))
+{
+	t_ent	*tmp;
+	char	*tmpstr;
+	int		time;
+
+	tmp = lst;
+	while  (tmp->next)
+	{
+		if ((*cmp)(tmp->mtime, tmp->next->mtime) <= 0)
+			tmp = tmp->next;
+		else
+		{
+			tmpstr = tmp->name;
+			time = tmp->mtime;
+			tmp->name = tmp->next->name;
+			tmp->mtime = tmp->next->mtime;
+			tmp->next->mtime = time;
+			tmp->next->name = tmpstr;
+			tmp = lst;
+		}
+	}
+	lst = tmp;
+	return (lst);
+}
+

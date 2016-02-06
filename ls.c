@@ -27,5 +27,4 @@ void	setupls(t_ls *ls, char **av, int ac)
 		start++;
 	}
 	ls->nbarg = arglen(ls->args);
-	ls->args = sortargs(ls->args, &ft_strasc);
 }

@@ -6,19 +6,11 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 12:54:32 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 15:42:04 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-int	printstat(char *filepath, struct stat filestat)
-{
-	//printf("%s st_dev:%d st_uid:%d \n", filepath, filestat.st_dev, filestat.st_uid);
-	ft_putstr(filepath);
-	ft_putstr("\n");
-	return (0);
-}
 
 void	listfiles(t_arg *arg, t_ls *ls)
 {
@@ -57,6 +49,8 @@ void	listdir(t_arg *arg, t_ls *ls)
 	dirfd = opendir(arg->path);
 	if (dirfd != NULL)
 	{
+		if (lstat(arg->path, &filestat) == 0)
+			arg->mtime = filestat.st_mtimespec.tv_sec;
 		while ((ent = readdir(dirfd)))
 		{
 			if ((ent->d_name[0] == '.' && ls->opts['a']) || ent->d_name[0] != '.')
@@ -75,6 +69,7 @@ void	listdir(t_arg *arg, t_ls *ls)
 				}
 			}
 		}
+		arg->empty = 0;
 		closedir(dirfd);
 	}
 	else

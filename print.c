@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 13:35:56 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 15:45:18 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	print_args(t_arg *args, t_ls *ls)
 			ft_putstr_fd(": ", 2);
 			ft_putendl_fd("Permission denied", 2);
 		}
-		if (arg->ent)
+		else if (arg->ent)
 		{
 			if (ls->out > 0)
 				ft_putendl("");
@@ -130,7 +130,18 @@ void	print_args(t_arg *args, t_ls *ls)
 				ft_putstr(":\n");
 			}
 			sortents(arg->ent, &ft_strasc);
+			sortentstime(arg->ent, &ft_timeasc);
 			print_ents(arg->path, arg->ent, ls, 1);
+		}
+		else if(!arg->empty)
+		{
+			if (ls->out > 0)
+				ft_putendl("");
+			if ((arglen(ls->args) > 1 || ls->out > 0))
+			{
+				ft_putstr(arg->path);
+				ft_putstr(":\n");
+			}
 		}
 		if (arg->sub)
 			print_args(arg->sub, ls);

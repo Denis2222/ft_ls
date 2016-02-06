@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 13:58:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 15:39:20 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	readopts(int ac, char **av, char *opts);
 
 typedef struct  s_column
 {
-    int         link;
-    int         user;
+    int			link;
+    int			user;
     int         group;
     int         size;
     int         block;
@@ -55,6 +55,8 @@ typedef struct  s_arg
   char          *path;
   t_ent         *ent;
   struct s_arg  *sub;
+  time_t        mtime;
+  int           empty;
   int           deny;
   struct s_arg  *next;
 }               t_arg;
@@ -63,7 +65,8 @@ typedef struct  s_ls
 {
   char          *opts;
   t_arg         *args;
-  t_ent       *files;
+  t_ent         *files;
+  void          *sort_ptr;
   int           nbarg;
   int           out;
 }				t_ls;
@@ -76,6 +79,7 @@ t_arg	*sortargs(t_arg *lst, int(*cmp)(char *, char *));
 void    viewarg(t_arg *arg);
 void    setupls(t_ls *ls, char **av, int ac);
 void    readargs(t_arg *arg, t_ls *ls);
+t_arg	*sortargstime(t_arg *lst, int (*cmp)(time_t, time_t));
 void    readfiles(t_arg *arg, t_ls *ls);
 int     arglen(t_arg *arg);
 
@@ -86,6 +90,7 @@ void	viewopts(t_ls *ls);
 t_ent   *newent(char *name, struct stat *filestat);
 t_ent   *addent(t_ent **lstent, t_ent *ent);
 t_ent   *sortents(t_ent *ent, int(*cmp)(char *, char *));
+t_ent   *sortentstime(t_ent *ent, int(*cmp)(time_t, time_t));
 int     entlen(t_ent *ent);
 
 t_sfile  *newfile(char *path);
@@ -94,7 +99,9 @@ t_sfile  *sortfiles(t_sfile *file, int (*cmp)(char *, char *));
 int      filelen(t_sfile *file);
 
 int	    ft_strasc(char *s1, char *s2);
-int	    ft_strdec(char *s1, char *s2);
+int     ft_strdec(char *s1, char *s2);
+int	    ft_timeasc(time_t s1, time_t s2);
+int	    ft_timedec(time_t s1, time_t s2);
 
 void	print_args(t_arg *args, t_ls *ls);
 void	print_ents(char *path, t_ent *ent, t_ls *ls, int type);
