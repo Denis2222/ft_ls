@@ -8,6 +8,8 @@ t_ls *newls(void)
 	ls->opts = NULL;
 	ls->args = NULL;
 	ls->files = NULL;
+	ls->sort_alpha = &ft_strasc;
+	ls->sort_time = NULL;
 	ls->nbarg = 0;
 	ls->out = 0;
 	return (ls);
@@ -27,4 +29,12 @@ void	setupls(t_ls *ls, char **av, int ac)
 		start++;
 	}
 	ls->nbarg = arglen(ls->args);
+	if (ls->opts['t'])
+	{
+		ls->sort_time = &ft_timedec;
+	}
+	else if (ls->opts['r'])
+	{
+		ls->sort_alpha = &ft_strdec;
+	}
 }

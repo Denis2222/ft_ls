@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 15:45:18 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 17:03:20 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,7 @@ void	print_args(t_arg *args, t_ls *ls)
 				ft_putstr(arg->path);
 				ft_putstr(":\n");
 			}
-			sortents(arg->ent, &ft_strasc);
-			sortentstime(arg->ent, &ft_timeasc);
+			sortents(arg->ent, ls->sort_alpha);
 			print_ents(arg->path, arg->ent, ls, 1);
 		}
 		else if(!arg->empty)

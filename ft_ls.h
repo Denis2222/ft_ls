@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 15:39:20 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/06 16:33:55 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ typedef struct  s_ls
   char          *opts;
   t_arg         *args;
   t_ent         *files;
-  void          *sort_ptr;
+  void          *sort_alpha;
+  void          *sort_time;
   int           nbarg;
   int           out;
 }				t_ls;
