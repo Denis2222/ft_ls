@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 18:01:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/07 20:19:58 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ void	listfiles(t_arg *arg, t_ls *ls)
 		if (lstat(arg->path, &filestat) == 0)
 		{
 			file = newent(arg->path, &filestat);
-			ls->files = addent(&ls->files , file);
+			ls->files = addent(&ls->files, file);
 		}
 		else
 		{
-			perror ("");
+			ft_putstr_fd("ls: ", 2);
+			ft_putstr_fd(arg->path, 2);
+			ft_putstr_fd(": ", 2);
+			perror("");
 		}
 	}
 	else
@@ -59,11 +62,11 @@ void	listdir(t_arg *arg, t_ls *ls)
 				{
 					ment = newent(ent->d_name, &filestat);
 					arg->ent = addent(&(arg->ent), ment);
-					if (!ft_strequ(ent->d_name,".") && !ft_strequ(ent->d_name,".."))
+					if (!ft_strequ(ent->d_name, ".") && !ft_strequ(ent->d_name, ".."))
 					{
 						if (ent->d_type == 4 && ls->opts['R'])
 						{
-							arg->sub = addarg(&arg->sub, newarg(ft_strjoin(arg->path,ft_strjoin("/", ment->name))));
+							arg->sub = addarg(&arg->sub, newarg(ft_strjoin(arg->path, ft_strjoin("/", ment->name))));
 						}
 					}
 				}
@@ -74,7 +77,7 @@ void	listdir(t_arg *arg, t_ls *ls)
 	}
 	else
 	{
-		if(errno == EACCES)
+		if (errno == EACCES)
 		{
 			arg->deny = 1;
 		}
@@ -94,4 +97,3 @@ void	timedir(t_arg *arg, t_ls *ls)
 		closedir(dirfd);
 	}
 }
-

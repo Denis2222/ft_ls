@@ -6,19 +6,19 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/01/12 23:35:45 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/07 19:25:09 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int	readopts(int ac, char **av, char *opts)
+int		readopts(int ac, char **av, char *opts)
 {
-	int	i;
-	const char *args = "lRart";
+	int			i;
+	const char	args[5] = {'l', 'R', 'a', 'r', 't'};
 
-	i = 1;
-	while (i < ac)
+	i = 0;
+	while (++i < ac)
 	{
 		if (*av[i] == '-')
 		{
@@ -37,7 +37,6 @@ int	readopts(int ac, char **av, char *opts)
 		}
 		else
 			return (i);
-		i++;
 	}
 	return (i);
 }

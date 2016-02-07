@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/07 19:46:29 by dmoureu-          #+#    #+#             */
+/*   Updated: 2016/02/07 19:46:41 by dmoureu-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-t_ls *newls(void)
+t_ls	*newls(void)
 {
 	t_ls *ls;
 
@@ -25,16 +37,16 @@ void	setupls(t_ls *ls, char **av, int ac)
 		ls->args = addarg(&(ls->args), newarg("."));
 	while (start < ac)
 	{
+		if (ft_strlen(av[start]) == 0)
+			erroremptyarg();
 		ls->args = addarg(&(ls->args), newarg(av[start]));
 		start++;
 	}
 	ls->nbarg = arglen(ls->args);
-	if (ls->opts['t'])
-	{
+	if (ls->opts['t'] && ls->opts['r'])
+		ls->sort_time = &ft_timeasc;
+	else if (ls->opts['t'])
 		ls->sort_time = &ft_timedec;
-	}
 	if (ls->opts['r'])
-	{
 		ls->sort_alpha = &ft_strdec;
-	}
 }

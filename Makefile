@@ -6,9 +6,10 @@ SRCS = main.c \
 	 args.c \
 	 ents.c \
 	 ls.c \
-	 file.c \
 	 print.c \
 	 tools.c \
+	 sorts.c \
+	 sortsfct.c \
 	 dir.c
 
 NAME = ft_ls

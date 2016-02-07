@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 17:23:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/07 20:17:45 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 	col.group = 0;
 	col.size = 0;
 	col.block = 0;
-	
 	if (ent)
 	{
 		if (!ls->opts['l'])
@@ -38,7 +37,7 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 		else
 		{
 			sent = ent;
-			while(ent)
+			while (ent)
 			{
 				if (lstat(ft_strjoin(path, ft_strjoin("/", ent->name)), &filestat) == 0)
 				{
@@ -50,7 +49,7 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 						if (ft_strlen(getpwuid(filestat.st_uid)->pw_name) > col.user)
 							col.user = ft_strlen(getpwuid(filestat.st_uid)->pw_name);
 					}
-					else if(ft_strlen(ft_itoa(filestat.st_uid)) > col.user)
+					else if (ft_strlen(ft_itoa(filestat.st_uid)) > col.user)
 						col.user = ft_strlen(ft_itoa(filestat.st_uid));
 					if (getgrgid(filestat.st_gid))
 						if (ft_strlen(getgrgid(filestat.st_gid)->gr_name) > col.group)
@@ -67,7 +66,7 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 				ft_putendl("");
 			}
 			ent = sent;
-			while(ent)
+			while (ent)
 			{
 				if (lstat(ft_strjoin(path, ft_strjoin("/", ent->name)), &filestat) == 0)
 				{
@@ -85,7 +84,7 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 					else
 						ft_putstrn(ft_itoa(filestat.st_gid), col.user + 4, 1);
 					ft_putchar(' ');
-					ft_putstrn(ft_itoa(filestat.st_size), col.size , 1);
+					ft_putstrn(ft_itoa(filestat.st_size), col.size, 1);
 					ft_putchar(' ');
 					ft_putstrn(ctimetols(ctime(&filestat.st_mtimespec.tv_sec)), 11, 1);
 					ft_putchar(' ');
@@ -134,7 +133,7 @@ void	print_args(t_arg *args, t_ls *ls)
 				sortentstime(arg->ent, ls->sort_time);
 			print_ents(arg->path, arg->ent, ls, 1);
 		}
-		else if(!arg->empty)
+		else if (!arg->empty)
 		{
 			if (ls->out > 0)
 				ft_putendl("");

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 17:44:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/06 18:05:01 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/07 19:05:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	readfiles(t_arg *args, t_ls *ls)
 		listfiles(arg, ls);
 		arg = arg->next;
 	}
-	if (ls->sort_time)
+	if (ls->sort_time && ls->files)
 		sortentstime(ls->files, ls->sort_time);
 	print_ents(".", ls->files, ls, 0);
 }
@@ -32,7 +32,6 @@ void	readargs(t_arg *args, t_ls *ls)
 	t_arg	*arg;
 
 	arg = args;
-	
 	while (arg)
 	{
 		timedir(arg, ls);
@@ -85,7 +84,7 @@ t_arg	*addarg(t_arg **lstarg, t_arg *arg)
 	return (beginlst);
 }
 
-int	arglen(t_arg *arg)
+int		arglen(t_arg *arg)
 {
 	int		length;
 	t_arg	*marg;
@@ -99,62 +98,3 @@ int	arglen(t_arg *arg)
 	}
 	return (length);
 }
-
-t_arg	*sortargs(t_arg *lst, int (*cmp)(char *, char *))
-{
-	t_arg	*tmparg;
-	t_ent	*tmpent;
-	char	*tmpstr;
-	time_t	tmptime;
-
-	tmparg = lst;
-	while (tmparg->next)
-	{
-		if ((*cmp)(tmparg->path, tmparg->next->path) <= 0)
-				tmparg = tmparg->next;
-			else
-			{
-				tmpent = tmparg->ent;
-				tmpstr = tmparg->path;
-				tmptime = tmparg->mtime;
-				tmparg->ent = tmparg->next->ent;
-				tmparg->path = tmparg->next->path;
-				tmparg->mtime = tmparg->next->mtime;
-				tmparg->next->ent = tmpent;
-				tmparg->next->path = tmpstr;
-				tmparg->next->mtime = tmptime;
-				tmparg = lst;
-			}
-	}
-	return (lst);
-}
-
-t_arg	*sortargstime(t_arg *lst, int (*cmp)(time_t, time_t))
-{
-	t_arg	*tmparg;
-	t_ent	*tmpent;
-	char	*tmpstr;
-	time_t	tmptime;
-
-	tmparg = lst;
-	while (tmparg->next)
-	{
-		if ((*cmp)(tmparg->mtime, tmparg->next->mtime) <= 0)
-				tmparg = tmparg->next;
-			else
-			{
-				tmpent = tmparg->ent;
-				tmpstr = tmparg->path;
-				tmptime = tmparg->mtime;
-				tmparg->ent = tmparg->next->ent;
-				tmparg->path = tmparg->next->path;
-				tmparg->mtime = tmparg->next->mtime;
-				tmparg->next->ent = tmpent;
-				tmparg->next->path = tmpstr;
-				tmparg->next->mtime = tmptime;
-				tmparg = lst;
-			}
-	}
-	return (lst);
-}
-
