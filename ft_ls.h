@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 16:20:12 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 16:20:19 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 23:21:29 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int					ft_timedec(time_t s1, time_t s2);
 void				print_args(t_arg *args, t_ls *ls);
 void				print_ents(char *path, t_ent *ent, t_ls *ls, int type);
 void				ft_putstrn(char *str, int n, int s);
-char				*ctimetols(char *time);
+char				*ctimetols(struct timespec *time);
 
 char				mode(mode_t st_mode);
 char				*modetostr(mode_t st_mode);

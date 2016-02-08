@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 22:38:14 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 23:21:46 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	printcolumn(struct stat *filestat, t_column *col, t_ent *ent, char *path)
 		ft_putstrnfree(ft_itoa(filestat->st_size), col->size, 1);
 	}
 	ft_putchar(' ');
-	ft_putstrnfree(ctimetols(ctime(&filestat->st_mtimespec.tv_sec)), 11, 1);
+	ft_putstrnfree(ctimetols(&filestat->st_mtimespec), 11, 1);
 	ft_putchar(' ');
 	ft_putstr(ent->name);
 	if ((filestat->st_mode & S_IFMT) == S_IFLNK)

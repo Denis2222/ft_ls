@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:27:49 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 16:14:50 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/09 00:18:38 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,28 @@ void	ft_putstrn(char *str, int n, int s)
 	ft_strdel(&newstr);
 }
 
-char	*ctimetols(char *time)
+char	*ctimetols(struct timespec *timespec)
 {
 	char	*str;
+	time_t	now;
+	time_t ftime;
+	char *toto;
+	char *day;
+	char *year;
 
-	str = ft_strsub(time, 4, 12);
+	ftime = timespec->tv_sec;
+	now = time(&now);
+	if (now < ftime || ftime + 60 * 60 * 24 * 31 * 6 < now)
+	{
+		toto = ctime(&timespec->tv_sec);
+		toto[ft_strlen(toto) - 1] = '\0';
+		day = ft_strsub(toto, 4, 7);
+		year = str = ft_strsub(toto, ft_strlen(toto) - ft_strlen(ft_strrchr(toto, ' ')), 6);
+		str = ft_strjoin(day, year);
+		ft_strdel(&day);
+		ft_strdel(&year);
+	}
+	else
+		str = ft_strsub(ctime(&timespec->tv_sec), 4, 12);
 	return (str);
 }
