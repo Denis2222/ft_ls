@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 16:22:23 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 18:08:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ void	listfiles(t_arg *arg, t_ls *ls)
 		else
 		{
 			ft_putstr_fd("ls: ", 2);
-			ft_putstr_fd(arg->path, 2);
-			ft_putstr_fd(": ", 2);
-			perror("");
+			perror(arg->path);
 		}
 	}
 	else if (errno == 0)

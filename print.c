@@ -6,11 +6,36 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 16:44:34 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 21:23:23 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+char *majorminor(dev_t dev)
+{
+	int		major;
+	int		minor;
+	int		length;
+	char	*strmajor;
+	char	*strminor;
+	char	*out;
+
+	major = major(dev);
+	minor = minor(dev);
+
+	strmajor = ft_itoa(major);
+	strminor = ft_itoa(minor);
+
+	length = ft_strlen(strmajor) + ft_strlen(strminor);
+	out = (char*)malloc(sizeof(char) * (length + 1));
+	out = ft_strcat(out, strmajor);
+	out = ft_strcat(out, ", ");
+	out = ft_strcat(out, strminor);
+	ft_strdel(&strmajor);
+	ft_strdel(&strminor);
+	return (out);
+}
 
 void	seekcolumnsizefile(struct stat *filestat, t_column *col)
 {
@@ -34,10 +59,20 @@ void	seekcolumnsizefile(struct stat *filestat, t_column *col)
 	if (getgrgid(filestat->st_gid))
 		if (ft_strlen(getgrgid(filestat->st_gid)->gr_name) > col->group)
 			col->group = ft_strlen(getgrgid(filestat->st_gid)->gr_name);
-	tmp = ft_itoa(filestat->st_size);
-	if (ft_strlen(tmp) > col->size)
-		col->size = ft_strlen(tmp);
-	ft_strdel(&tmp);
+	if ((filestat->st_mode & S_IFMT) == S_IFBLK || (filestat->st_mode & S_IFMT) == S_IFCHR)
+	{
+		tmp = majorminor(filestat->st_dev);
+		if (ft_strlen(tmp) > col->size)
+			col->size = ft_strlen(tmp);
+		ft_strdel(&tmp);
+	}
+	else
+	{
+		tmp = ft_itoa(filestat->st_size);
+		if (ft_strlen(tmp) > col->size)
+			col->size = ft_strlen(tmp);
+		ft_strdel(&tmp);
+	}
 }
 
 void	seekcolumnsize(t_ent *ent, char *path, t_column *col)
@@ -92,7 +127,14 @@ void	printcolumn(struct stat *filestat, t_column *col, t_ent *ent)
 	else
 		ft_putstrnfree(ft_itoa(filestat->st_gid), col->user + 4, 1);
 	ft_putchar(' ');
-	ft_putstrnfree(ft_itoa(filestat->st_size), col->size, 1);
+	if ((filestat->st_mode & S_IFMT) == S_IFBLK || (filestat->st_mode & S_IFMT) == S_IFCHR)
+	{
+		ft_putstrnfree(majorminor(filestat->st_rdev), col->size, 1);
+	}
+	else
+	{
+		ft_putstrnfree(ft_itoa(filestat->st_size), col->size, 1);
+	}
 	ft_putchar(' ');
 	ft_putstrnfree(ctimetols(ctime(&filestat->st_mtimespec.tv_sec)), 11, 1);
 	ft_putchar(' ');
@@ -145,7 +187,6 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 		{
 			sent = ent;
 			seekcolumnsize(ent, path, &col);
-			ft_putnbr(col.user);
 			if (type)
 			{
 				ft_putstr("total ");
