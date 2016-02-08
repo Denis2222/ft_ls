@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 22:08:06 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 22:38:14 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,14 @@ void	ft_putstrnfree(char *str, int n, int s)
 	ft_strdel(&str);
 }
 
-void	printcolumn(struct stat *filestat, t_column *col, t_ent *ent)
+void	printcolumn(struct stat *filestat, t_column *col, t_ent *ent, char *path)
 {
+	char	*tmp;
+	size_t	toto;
+	int		r;
+
+	toto = 0;
+	tmp = NULL;
 	ft_putstrfree(modetostr(filestat->st_mode));
 	ft_putchar(' ');
 	ft_putstrnfree(ft_itoa(filestat->st_nlink), col->link + 1, 1);
@@ -139,6 +145,14 @@ void	printcolumn(struct stat *filestat, t_column *col, t_ent *ent)
 	ft_putstrnfree(ctimetols(ctime(&filestat->st_mtimespec.tv_sec)), 11, 1);
 	ft_putchar(' ');
 	ft_putstr(ent->name);
+	if ((filestat->st_mode & S_IFMT) == S_IFLNK)
+	{
+		tmp = malloc(filestat->st_size + 1);
+		r = readlink(path, tmp, filestat->st_size + 1);
+		tmp[r] = '\0';
+		ft_putstr(" -> ");
+		ft_putstr(tmp);
+	}
 	ft_putchar('\n');
 }
 
@@ -154,7 +168,7 @@ void	printcolumns(t_ent *ent, t_column *col, char *path)
 		lpath2 = ft_strjoin(path, lpath);
 		if (lstat(lpath2, &filestat) == 0)
 		{
-			printcolumn(&filestat, col, ent);
+			printcolumn(&filestat, col, ent, lpath2);
 		}
 		ft_strdel(&lpath);
 		ft_strdel(&lpath2);
