@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 21:23:23 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 22:08:06 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,8 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 	col.block = 0;
 	if (ent)
 	{
+		if (type == 0)
+			ls->out++;
 		if (!ls->opts['l'])
 		{
 			while (ent)
@@ -196,7 +198,6 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 			ent = sent;
 			printcolumns(ent, &col, path);
 		}
-		ls->out++;
 	}
 }
 
@@ -238,7 +239,9 @@ void	print_args(t_arg *args, t_ls *ls)
 		else if (!arg->empty)
 		{
 			if (ls->out > 0)
+			{
 				ft_putendl("");
+			}
 			if ((arglen(ls->args) > 1 || ls->out > 0))
 			{
 				ft_putstr(arg->path);
@@ -248,5 +251,6 @@ void	print_args(t_arg *args, t_ls *ls)
 		if (arg->sub)
 			print_args(arg->sub, ls);
 		arg = arg->next;
+		ls->out++;
 	}
 }

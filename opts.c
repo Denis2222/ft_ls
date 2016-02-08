@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 16:19:02 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 21:50:48 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		readopts(int ac, char **av, char *opts)
 {
 	int			i;
-	const char	args[5] = {'l', 'R', 'a', 'r', 't'};
+	const char	args[6] = {'l', 'R', 'a', 'r', 't', '1'};
 
 	i = 0;
 	while (++i < ac)
