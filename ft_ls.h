@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls2.h                                           :+:      :+:    :+:   */
+/*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/07 19:54:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/07 20:13:19 by dmoureu-         ###   ########.fr       */
+/*   Created: 2016/02/08 16:20:12 by dmoureu-          #+#    #+#             */
+/*   Updated: 2016/02/08 16:20:19 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int					readopts(int ac, char **av, char *opts);
 
 typedef struct		s_column
 {
-	int				link;
-	int				user;
-	int				group;
-	int				size;
-	int				block;
+	size_t			link;
+	size_t			user;
+	size_t			group;
+	size_t			size;
+	size_t			block;
 }					t_column;
 
 typedef struct		s_ent
@@ -76,7 +76,7 @@ void				viewarg(t_arg *arg);
 void				setupls(t_ls *ls, char **av, int ac);
 void				readargs(t_arg *arg, t_ls *ls);
 t_arg				*sortargstime(t_arg *lst, int (*cmp)(time_t, time_t));
-void				readfiles(t_arg *arg, t_ls *ls);
+void				readfiles(t_ls *ls);
 int					arglen(t_arg *arg);
 
 void				listfiles(t_arg *arg, t_ls *ls);
@@ -102,6 +102,6 @@ char				*ctimetols(char *time);
 char				mode(mode_t st_mode);
 char				*modetostr(mode_t st_mode);
 
-void				timedir(t_arg *arg, t_ls *ls);
+void				timedir(t_arg *arg);
 
 #endif

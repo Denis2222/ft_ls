@@ -6,13 +6,13 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 17:44:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/07 19:05:32 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 16:16:17 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	readfiles(t_arg *args, t_ls *ls)
+void	readfiles(t_ls *ls)
 {
 	t_arg	*arg;
 
@@ -34,7 +34,7 @@ void	readargs(t_arg *args, t_ls *ls)
 	arg = args;
 	while (arg)
 	{
-		timedir(arg, ls);
+		timedir(arg);
 		arg = arg->next;
 	}
 	arg = args;
@@ -56,7 +56,7 @@ t_arg	*newarg(char *str)
 	t_arg *arg;
 
 	arg = (t_arg*)malloc(sizeof(t_arg));
-	arg->path = str;
+	arg->path = ft_strdup(str);
 	arg->deny = 0;
 	arg->mtime = 0;
 	arg->empty = 1;

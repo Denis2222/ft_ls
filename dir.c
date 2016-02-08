@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/07 20:19:58 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 16:22:23 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	listfiles(t_arg *arg, t_ls *ls)
 {
-	DIR	*dirfd;
+	DIR				*dirfd;
 	struct stat		filestat;
 	t_ent			*file;
 
@@ -34,11 +34,29 @@ void	listfiles(t_arg *arg, t_ls *ls)
 			perror("");
 		}
 	}
-	else
+	else if (errno == 0)
+		closedir(dirfd);
+}
+
+void	listdiranalyse(t_ls *ls, t_arg *arg, struct dirent *ent)
+{
+	struct stat		filestat;
+	t_ent			*ment;
+	char			*lpath;
+	char			*lpath2;
+
+	lpath = ft_strjoin("/", ent->d_name);
+	lpath2 = ft_strjoin(arg->path, lpath);
+	if (lstat(lpath2, &filestat) == 0)
 	{
-		if (errno == 0)
-			closedir(dirfd);
+		ment = newent(ent->d_name, &filestat);
+		arg->ent = addent(&(arg->ent), ment);
+		if (!ft_strequ(ent->d_name, ".") && !ft_strequ(ent->d_name, ".."))
+			if (ent->d_type == 4 && ls->opts['R'])
+				arg->sub = addarg(&arg->sub, newarg(lpath2));
 	}
+	ft_strdel(&lpath2);
+	ft_strdel(&lpath);
 }
 
 void	listdir(t_arg *arg, t_ls *ls)
@@ -46,8 +64,6 @@ void	listdir(t_arg *arg, t_ls *ls)
 	DIR				*dirfd;
 	struct dirent	*ent;
 	struct stat		filestat;
-	t_ent			*file;
-	t_ent			*ment;
 
 	dirfd = opendir(arg->path);
 	if (dirfd != NULL)
@@ -56,35 +72,18 @@ void	listdir(t_arg *arg, t_ls *ls)
 			arg->mtime = filestat.st_mtimespec.tv_sec;
 		while ((ent = readdir(dirfd)))
 		{
-			if ((ent->d_name[0] == '.' && ls->opts['a']) || ent->d_name[0] != '.')
-			{
-				if (lstat(ft_strjoin(arg->path, ft_strjoin("/", ent->d_name)), &filestat) == 0)
-				{
-					ment = newent(ent->d_name, &filestat);
-					arg->ent = addent(&(arg->ent), ment);
-					if (!ft_strequ(ent->d_name, ".") && !ft_strequ(ent->d_name, ".."))
-					{
-						if (ent->d_type == 4 && ls->opts['R'])
-						{
-							arg->sub = addarg(&arg->sub, newarg(ft_strjoin(arg->path, ft_strjoin("/", ment->name))));
-						}
-					}
-				}
-			}
+			if ((ent->d_name[0] == '.' &&
+				ls->opts['a']) || ent->d_name[0] != '.')
+				listdiranalyse(ls, arg, ent);
 		}
 		arg->empty = 0;
 		closedir(dirfd);
 	}
-	else
-	{
-		if (errno == EACCES)
-		{
-			arg->deny = 1;
-		}
-	}
+	else if (errno == EACCES)
+		arg->deny = 1;
 }
 
-void	timedir(t_arg *arg, t_ls *ls)
+void	timedir(t_arg *arg)
 {
 	DIR				*dirfd;
 	struct stat		filestat;

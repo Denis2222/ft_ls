@@ -6,15 +6,122 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/07 20:17:45 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 16:44:34 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
+void	seekcolumnsizefile(struct stat *filestat, t_column *col)
+{
+	char	*tmp;
+
+	col->block += filestat->st_blocks;
+	tmp = ft_itoa(filestat->st_nlink);
+	if (ft_strlen(tmp) > col->link)
+		col->link = ft_strlen(tmp);
+	if (getpwuid(filestat->st_uid))
+	{
+		if (ft_strlen(getpwuid(filestat->st_uid)->pw_name) > col->user)
+			col->user = ft_strlen(getpwuid(filestat->st_uid)->pw_name);
+	}
+	else
+	{
+		tmp = ft_itoa(filestat->st_uid);
+		if (ft_strlen(tmp) > col->user)
+			col->user = ft_strlen(tmp);
+	}
+	if (getgrgid(filestat->st_gid))
+		if (ft_strlen(getgrgid(filestat->st_gid)->gr_name) > col->group)
+			col->group = ft_strlen(getgrgid(filestat->st_gid)->gr_name);
+	tmp = ft_itoa(filestat->st_size);
+	if (ft_strlen(tmp) > col->size)
+		col->size = ft_strlen(tmp);
+	ft_strdel(&tmp);
+}
+
+void	seekcolumnsize(t_ent *ent, char *path, t_column *col)
 {
 	struct stat	filestat;
+	char		*lpath;
+	char		*lpath2;
+
+	while (ent)
+	{
+		lpath = ft_strjoin("/", ent->name);
+		lpath2 = ft_strjoin(path, lpath);
+		if (lstat(lpath2, &filestat) == 0)
+		{
+			seekcolumnsizefile(&filestat, col);
+		}
+		ft_strdel(&lpath);
+		ft_strdel(&lpath2);
+		ent = ent->next;
+	}
+}
+
+void	ft_putstrfree(char *str)
+{
+	if (str)
+	{
+		ft_putstr(str);
+		free(str);
+		str = NULL;
+	}
+}
+
+void	ft_putstrnfree(char *str, int n, int s)
+{
+	ft_putstrn(str, n, s);
+	ft_strdel(&str);
+}
+
+void	printcolumn(struct stat *filestat, t_column *col, t_ent *ent)
+{
+	ft_putstrfree(modetostr(filestat->st_mode));
+	ft_putchar(' ');
+	ft_putstrnfree(ft_itoa(filestat->st_nlink), col->link + 1, 1);
+	ft_putchar(' ');
+	if (getpwuid(filestat->st_uid))
+		ft_putstrn(getpwuid(filestat->st_uid)->pw_name, col->user + 1, 0);
+	else
+		ft_putstrnfree(ft_itoa(filestat->st_uid), col->user + 1, 0);
+	ft_putchar(' ');
+	if (getgrgid(filestat->st_gid))
+		ft_putstrn(getgrgid(filestat->st_gid)->gr_name, col->group + 1, 0);
+	else
+		ft_putstrnfree(ft_itoa(filestat->st_gid), col->user + 4, 1);
+	ft_putchar(' ');
+	ft_putstrnfree(ft_itoa(filestat->st_size), col->size, 1);
+	ft_putchar(' ');
+	ft_putstrnfree(ctimetols(ctime(&filestat->st_mtimespec.tv_sec)), 11, 1);
+	ft_putchar(' ');
+	ft_putstr(ent->name);
+	ft_putchar('\n');
+}
+
+void	printcolumns(t_ent *ent, t_column *col, char *path)
+{
+	struct stat	filestat;
+	char		*lpath;
+	char		*lpath2;
+
+	while (ent)
+	{
+		lpath = ft_strjoin("/", ent->name);
+		lpath2 = ft_strjoin(path, lpath);
+		if (lstat(lpath2, &filestat) == 0)
+		{
+			printcolumn(&filestat, col, ent);
+		}
+		ft_strdel(&lpath);
+		ft_strdel(&lpath2);
+		ent = ent->next;
+	}
+}
+
+void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
+{
 	t_ent		*sent;
 	t_column	col;
 
@@ -37,28 +144,8 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 		else
 		{
 			sent = ent;
-			while (ent)
-			{
-				if (lstat(ft_strjoin(path, ft_strjoin("/", ent->name)), &filestat) == 0)
-				{
-					col.block += filestat.st_blocks;
-					if (ft_strlen(ft_itoa(filestat.st_nlink)) > col.link)
-						col.link = ft_strlen(ft_itoa(filestat.st_nlink));
-					if (getpwuid(filestat.st_uid))
-					{
-						if (ft_strlen(getpwuid(filestat.st_uid)->pw_name) > col.user)
-							col.user = ft_strlen(getpwuid(filestat.st_uid)->pw_name);
-					}
-					else if (ft_strlen(ft_itoa(filestat.st_uid)) > col.user)
-						col.user = ft_strlen(ft_itoa(filestat.st_uid));
-					if (getgrgid(filestat.st_gid))
-						if (ft_strlen(getgrgid(filestat.st_gid)->gr_name) > col.group)
-							col.group = ft_strlen(getgrgid(filestat.st_gid)->gr_name);
-					if (ft_strlen(ft_itoa(filestat.st_size)) > col.size)
-						col.size = ft_strlen(ft_itoa(filestat.st_size));
-				}
-				ent = ent->next;
-			}
+			seekcolumnsize(ent, path, &col);
+			ft_putnbr(col.user);
 			if (type)
 			{
 				ft_putstr("total ");
@@ -66,33 +153,7 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 				ft_putendl("");
 			}
 			ent = sent;
-			while (ent)
-			{
-				if (lstat(ft_strjoin(path, ft_strjoin("/", ent->name)), &filestat) == 0)
-				{
-					ft_putstr(modetostr(filestat.st_mode));
-					ft_putchar(' ');
-					ft_putstrn(ft_itoa(filestat.st_nlink), col.link + 1, 1);
-					ft_putchar(' ');
-					if (getpwuid(filestat.st_uid))
-						ft_putstrn(getpwuid(filestat.st_uid)->pw_name, col.user + 1, 0);
-					else
-						ft_putstrn(ft_itoa(filestat.st_uid), col.user + 1, 0);
-					ft_putchar(' ');
-					if (getgrgid(filestat.st_gid))
-						ft_putstrn(getgrgid(filestat.st_gid)->gr_name, col.group + 1, 0);
-					else
-						ft_putstrn(ft_itoa(filestat.st_gid), col.user + 4, 1);
-					ft_putchar(' ');
-					ft_putstrn(ft_itoa(filestat.st_size), col.size, 1);
-					ft_putchar(' ');
-					ft_putstrn(ctimetols(ctime(&filestat.st_mtimespec.tv_sec)), 11, 1);
-					ft_putchar(' ');
-					ft_putstr(ent->name);
-					ft_putchar('\n');
-				}
-				ent = ent->next;
-			}
+			printcolumns(ent, &col, path);
 		}
 		ls->out++;
 	}

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:54:01 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/07 19:02:14 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 16:12:46 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 	ls = newls();
 	setupls(ls, av, ac);
 	sortargs(ls->args, ls->sort_alpha);
-	readfiles(ls->args, ls);
+	readfiles(ls);
 	readargs(ls->args, ls);
 	return (0);
 }

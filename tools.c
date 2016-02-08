@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:27:49 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/07 19:45:42 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/08 16:14:50 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ char	*putstrnright(char *newstr, char *str, int n)
 
 void	ft_putstrn(char *str, int n, int s)
 {
-	int		length;
 	char	*newstr;
 	int		i;
 
@@ -101,7 +100,7 @@ void	ft_putstrn(char *str, int n, int s)
 		newstr[i] = '\0';
 	}
 	ft_putstr(newstr);
-	free(newstr);
+	ft_strdel(&newstr);
 }
 
 char	*ctimetols(char *time)
