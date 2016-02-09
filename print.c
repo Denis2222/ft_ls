@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 23:21:46 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/09 17:23:17 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,12 +188,12 @@ void	print_ents(char *path, t_ent *ent, t_ls *ls, int type)
 	col.block = 0;
 	if (ent)
 	{
-		if (type == 0)
-			ls->out++;
 		if (!ls->opts['l'])
 		{
 			while (ent)
 			{
+				if (type == 0)
+					ls->out++;
 				ft_putstr(ent->name);
 				ft_putchar('\n');
 				ent = ent->next;

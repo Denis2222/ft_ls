@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 21:50:48 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/09 17:16:29 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,19 @@ int		readopts(int ac, char **av, char *opts)
 			av[i]++;
 			if (*av[i] == '\0')
 			{
+				ft_putstr("");
 				av[i]--;
 				return (i);
 			}
+			if (*av[i] == '-')
+			{
+				if (*(++av[i]) == '\0')
+					return (i + 1);
+				else
+					error("ft_ls: illegal option -- ", *(--av[i]));
+			}
 			while (strchr(args, *av[i]) && *av[i] != '\0')
 				opts[(int)(*av[i]++)] = 1;
-			if (*av[i] == '-')
-				return (++i);
 			if (*av[i] != '\0')
 				error("ls: illegal option -- ", *av[i]);
 		}

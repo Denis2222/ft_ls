@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/07 19:47:47 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/07 20:41:49 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/09 17:16:31 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 void	usage(void)
 {
-	ft_putstr("usage: ft_ls [-lRart] [file ...]");
+	ft_putendl_fd("usage: ls [-1Rlart] [file ...]", 2);
 }
 
 void	error(char *str, char c)
 {
-	ft_putstr(str);
+	ft_putstr_fd(str, 2);
 	if (c)
-		ft_putchar(c);
-	ft_putchar('\n');
+		ft_putchar_fd(c, 2);
+	ft_putchar_fd('\n', 2);
 	usage();
 	exit(EXIT_FAILURE);
 }
 
 void	erroremptyarg(void)
 {
-	ft_putendl("ft_ls: fts_open: No such file or directory");
+	ft_putendl_fd("ls: fts_open: No such file or directory", 2);
 	exit(EXIT_FAILURE);
 }
