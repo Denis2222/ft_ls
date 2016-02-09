@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:10:28 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/09 17:23:17 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/09 20:51:11 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ void	print_args(t_arg *args, t_ls *ls)
 				ft_putstr(arg->path);
 				ft_putstr(":\n");
 			}
-			ft_putstr_fd("ls :", 2);
+			ft_putstr_fd("ls:", 2);
 			ft_putstr_fd(arg->path, 2);
 			ft_putstr_fd(": ", 2);
 			ft_putendl_fd("Permission denied", 2);
