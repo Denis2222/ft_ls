@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   columnprint.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/10 21:54:49 by dmoureu-          #+#    #+#             */
+/*   Updated: 2016/02/10 21:58:29 by dmoureu-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-static void	printcolumni(struct stat *filestat, t_ent *ent, char *path)
+void	printcolumni(struct stat *filestat, t_ent *ent, char *path)
 {
 	int		r;
 	char	*tmp;
 
 	tmp = NULL;
 	ft_putchar(' ');
-	ft_putstrnfree(ctimetols(&filestat->st_mtimespec), 11, 1);
+	ctimetols(&filestat->st_mtimespec);
 	ft_putchar(' ');
 	ft_putstr(ent->name);
 	if ((filestat->st_mode & S_IFMT) == S_IFLNK)
 	{
-		tmp = malloc(filestat->st_size + 1);
-		r = readlink(path, tmp, filestat->st_size + 1);
+		tmp = malloc(filestat->st_size + 4);
+		r = readlink(path, tmp, filestat->st_size + 4);
 		tmp[r] = '\0';
 		ft_putstr(" -> ");
 		ft_putstr(tmp);
@@ -21,7 +33,8 @@ static void	printcolumni(struct stat *filestat, t_ent *ent, char *path)
 	ft_putchar('\n');
 }
 
-static void	printcolumn(struct stat *filestat, t_column *col, t_ent *ent, char *path)
+void	printcolumn(struct stat *filestat, t_column *col,
+		t_ent *ent, char *path)
 {
 	ft_putstrfree(modetostr(filestat->st_mode));
 	ft_putchar(' ');
@@ -53,13 +66,16 @@ void	printcolumns(t_ent *ent, t_column *col, char *path)
 
 	while (ent)
 	{
-		lpath = ft_strjoin("/", ent->name);
-		lpath2 = ft_strjoin(path, lpath);
-		if (lstat(lpath2, &filestat) == 0)
+		if (ft_strcmp(path, ".") != 0)
 		{
-			printcolumn(&filestat, col, ent, lpath2);
+			lpath = ft_strjoin("/", ent->name);
+			lpath2 = ft_strjoin(path, lpath);
+			ft_strdel(&lpath);
 		}
-		ft_strdel(&lpath);
+		else
+			lpath2 = ft_strdup(ent->name);
+		if (lstat(lpath2, &filestat) == 0)
+			printcolumn(&filestat, col, ent, lpath2);
 		ft_strdel(&lpath2);
 		ent = ent->next;
 	}

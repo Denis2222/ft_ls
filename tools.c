@@ -6,93 +6,41 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 12:27:49 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/09 20:23:58 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/10 21:54:00 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#define SIXMONTH 86400 * 31 * 6
 
-char	*putstrnright(char *newstr, char *str, int n)
+void	ctimetols(struct timespec *timespec)
 {
-	int	i;
-	int	length;
-
-	i = 0;
-	length = n - ft_strlen(str);
-	while (i < length)
-	{
-		newstr[i] = ' ';
-		i++;
-	}
-	newstr[i] = '\0';
-	return (ft_strcat(newstr, str));
-}
-
-void	ft_putstrn(char *str, int n, int s)
-{
-	char	*newstr;
-	int		i;
-
-	i = 0;
-	newstr = (char *)malloc(sizeof(char) * n + 1);
-	if (s)
-	{
-		newstr = putstrnright(newstr, str, n);
-	}
-	else
-	{
-		i = ft_strlen(str);
-		ft_strcpy(newstr, str);
-		while (i < n)
-		{
-			newstr[i] = ' ';
-			i++;
-		}
-		newstr[i] = '\0';
-	}
-	ft_putstr(newstr);
-	ft_strdel(&newstr);
-}
-
-char	*ctimetols(struct timespec *timespec)
-{
-	char	*str;
+	char	*strtime;
 	time_t	now;
-	time_t ftime;
-	char *toto;
-	char *day;
-	char *year;
 
-	ftime = timespec->tv_sec;
 	now = time(&now);
-	if (now < ftime || ftime + 60 * 60 * 24 * 31 * 6 < now)
+	strtime = ctime(&timespec->tv_sec);
+	if (now + SIXMONTH < timespec->tv_sec || timespec->tv_sec + SIXMONTH < now)
 	{
-		toto = ctime(&timespec->tv_sec);
-		toto[ft_strlen(toto) - 1] = '\0';
-		day = ft_strsub(toto, 4, 7);
-		year = str = ft_strsub(toto, ft_strlen(toto) - ft_strlen(ft_strrchr(toto, ' ')), 6);
-		str = ft_strjoin(day, year);
-		ft_strdel(&day);
-		ft_strdel(&year);
+		strtime[ft_strlen(strtime) - 1] = '\0';
+		write(1, strtime + 4, 7);
+		ft_putstr(ft_strrchr(strtime, ' '));
 	}
 	else
-		str = ft_strsub(ctime(&timespec->tv_sec), 4, 12);
-	return (str);
+	{
+		write(1, strtime + 4, 12);
+	}
 }
 
-char *majorminor(dev_t dev)
+char	*majorminor(dev_t dev)
 {
-	int		major;
-	int		minor;
 	int		length;
 	char	*strmajor;
 	char	*strminor;
 	char	*out;
 
-	major = major(dev);
-	minor = minor(dev);
-	strmajor = ft_itoa(major);
-	strminor = ft_itoa(minor);
+	strmajor = ft_itoa(major(dev));
+	strminor = ft_itoa(minor(dev));
 	length = ft_strlen(strmajor) + ft_strlen(strminor);
 	out = (char*)malloc(sizeof(char) * (length + 1));
 	out = ft_strcat(out, strmajor);

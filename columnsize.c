@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   columnsize.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/10 21:54:35 by dmoureu-          #+#    #+#             */
+/*   Updated: 2016/02/10 21:56:16 by dmoureu-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	seekcolumnsizefileug(struct stat *filestat, t_column *col)
@@ -55,11 +67,16 @@ void	seekcolumnsize(t_ent *ent, char *path, t_column *col)
 
 	while (ent)
 	{
-		lpath = ft_strjoin("/", ent->name);
-		lpath2 = ft_strjoin(path, lpath);
+		if (ft_strcmp(path, ".") != 0)
+		{
+			lpath = ft_strjoin("/", ent->name);
+			lpath2 = ft_strjoin(path, lpath);
+			ft_strdel(&lpath);
+		}
+		else
+			lpath2 = ft_strdup(ent->name);
 		if (lstat(lpath2, &filestat) == 0)
 			seekcolumnsizefile(&filestat, col);
-		ft_strdel(&lpath);
 		ft_strdel(&lpath2);
 		ent = ent->next;
 	}

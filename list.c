@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/08 18:08:32 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/10 17:18:57 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,12 @@ void	listdiranalyse(t_ls *ls, t_arg *arg, struct dirent *ent)
 		ment = newent(ent->d_name, &filestat);
 		arg->ent = addent(&(arg->ent), ment);
 		if (!ft_strequ(ent->d_name, ".") && !ft_strequ(ent->d_name, ".."))
-			if (ent->d_type == 4 && ls->opts['R'])
+		{
+			if ((ent->d_type == 4 || ent->d_type == 0) && ls->opts['R'])
+			{
 				arg->sub = addarg(&arg->sub, newarg(lpath2));
+			}
+		}
 	}
 	ft_strdel(&lpath2);
 	ft_strdel(&lpath);

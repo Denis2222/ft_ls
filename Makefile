@@ -13,7 +13,9 @@ SRCS = main.c \
 	 columnprint.c \
 	 columnsize.c \
 	 mode.c \
-	 dir.c
+	 putstr.c \
+	 read.c \
+	 list.c
 
 NAME = ft_ls
 GCC_FLAG = -Wall -Werror -Wextra -g

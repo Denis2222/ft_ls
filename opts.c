@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 22:43:35 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/09 17:16:29 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/10 20:28:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@ void	readoptsargs(char **av, char *opts, int i)
 {
 	const char	args[6] = {'l', 'R', 'a', 'r', 't', '1'};
 
-	while (strchr(args, *av[i]) && *av[i] != '\0')
-		opts[(int)(*av[i]++)] = 1;
+	while (ft_strchr(args, *av[i]) && *av[i] != 0)
+	{
+		opts[(int)(*av[i])] = 1;
+		(av[i]++);
+	}
+	write(1, "", 0);
 	if (*av[i] != '\0')
 		error("ls: illegal option -- ", *av[i]);
 }
@@ -31,7 +35,7 @@ int		readopts(int ac, char **av, char *opts, int i)
 			av[i]++;
 			if (*av[i] == '\0')
 			{
-				ft_putstr("");
+				write(1, "", 0);
 				av[i]--;
 				return (i);
 			}

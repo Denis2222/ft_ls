@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mode.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/10 15:37:19 by dmoureu-          #+#    #+#             */
+/*   Updated: 2016/02/10 20:07:32 by dmoureu-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 char	mode(mode_t st_mode)
@@ -75,7 +87,7 @@ char	*modetostr(mode_t st_mode)
 {
 	char *str;
 
-	str = (char*)malloc(sizeof(char) * 11);
+	str = (char*)malloc(sizeof(char) * 12);
 	ft_memset(str, '-', 10);
 	str[10] = '\0';
 	str[0] = mode(st_mode);
