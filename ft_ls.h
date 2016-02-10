@@ -104,4 +104,15 @@ char				*modetostr(mode_t st_mode);
 
 void				timedir(t_arg *arg);
 
+char				*putstrnright(char *newstr, char *str, int n);
+void				ft_putstrn(char *str, int n, int s);
+char				*ctimetols(struct timespec *timespec);
+char				*majorminor(dev_t dev);
+
+void				printcolumns(t_ent *ent, t_column *col, char *path);
+void				ft_putstrfree(char *str);
+void				ft_putstrnfree(char *str, int n, int s);
+void				seekcolumnsize(t_ent *ent, char *path, t_column *col);
+char				*modetostr(mode_t st_mode);
+
 #endif

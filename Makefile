@@ -10,6 +10,9 @@ SRCS = main.c \
 	 tools.c \
 	 sorts.c \
 	 sortsfct.c \
+	 columnprint.c \
+	 columnsize.c \
+	 mode.c \
 	 dir.c
 
 NAME = ft_ls
