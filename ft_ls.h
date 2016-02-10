@@ -26,7 +26,7 @@
 
 void				error(char *str, char c);
 void				erroremptyarg(void);
-int					readopts(int ac, char **av, char *opts);
+int					readopts(int ac, char **av, char *opts, int i);
 
 typedef struct		s_column
 {

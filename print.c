@@ -23,10 +23,8 @@ char *majorminor(dev_t dev)
 
 	major = major(dev);
 	minor = minor(dev);
-
 	strmajor = ft_itoa(major);
 	strminor = ft_itoa(minor);
-
 	length = ft_strlen(strmajor) + ft_strlen(strminor);
 	out = (char*)malloc(sizeof(char) * (length + 1));
 	out = ft_strcat(out, strmajor);
@@ -37,14 +35,10 @@ char *majorminor(dev_t dev)
 	return (out);
 }
 
-void	seekcolumnsizefile(struct stat *filestat, t_column *col)
+void	seekcolumnsizefileug(struct stat *filestat, t_column *col)
 {
 	char	*tmp;
 
-	col->block += filestat->st_blocks;
-	tmp = ft_itoa(filestat->st_nlink);
-	if (ft_strlen(tmp) > col->link)
-		col->link = ft_strlen(tmp);
 	if (getpwuid(filestat->st_uid))
 	{
 		if (ft_strlen(getpwuid(filestat->st_uid)->pw_name) > col->user)
@@ -55,10 +49,22 @@ void	seekcolumnsizefile(struct stat *filestat, t_column *col)
 		tmp = ft_itoa(filestat->st_uid);
 		if (ft_strlen(tmp) > col->user)
 			col->user = ft_strlen(tmp);
+		ft_strdel(&tmp);
 	}
 	if (getgrgid(filestat->st_gid))
 		if (ft_strlen(getgrgid(filestat->st_gid)->gr_name) > col->group)
 			col->group = ft_strlen(getgrgid(filestat->st_gid)->gr_name);
+}
+
+void	seekcolumnsizefile(struct stat *filestat, t_column *col)
+{
+	char	*tmp;
+
+	col->block += filestat->st_blocks;
+	tmp = ft_itoa(filestat->st_nlink);
+	if (ft_strlen(tmp) > col->link)
+		col->link = ft_strlen(tmp);
+	seekcolumnsizefileug(filestat, col);
 	if ((filestat->st_mode & S_IFMT) == S_IFBLK || (filestat->st_mode & S_IFMT) == S_IFCHR)
 	{
 		tmp = majorminor(filestat->st_dev);
@@ -114,10 +120,8 @@ void	ft_putstrnfree(char *str, int n, int s)
 void	printcolumn(struct stat *filestat, t_column *col, t_ent *ent, char *path)
 {
 	char	*tmp;
-	size_t	toto;
 	int		r;
 
-	toto = 0;
 	tmp = NULL;
 	ft_putstrfree(modetostr(filestat->st_mode));
 	ft_putchar(' ');

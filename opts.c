@@ -12,12 +12,18 @@
 
 #include "ft_ls.h"
 
-int		readopts(int ac, char **av, char *opts)
+void	readoptsargs(char **av, char *opts, int i)
 {
-	int			i;
 	const char	args[6] = {'l', 'R', 'a', 'r', 't', '1'};
 
-	i = 0;
+	while (strchr(args, *av[i]) && *av[i] != '\0')
+		opts[(int)(*av[i]++)] = 1;
+	if (*av[i] != '\0')
+		error("ls: illegal option -- ", *av[i]);
+}
+
+int		readopts(int ac, char **av, char *opts, int i)
+{
 	while (++i < ac)
 	{
 		if (*av[i] == '-')
@@ -36,10 +42,7 @@ int		readopts(int ac, char **av, char *opts)
 				else
 					error("ft_ls: illegal option -- ", *(--av[i]));
 			}
-			while (strchr(args, *av[i]) && *av[i] != '\0')
-				opts[(int)(*av[i]++)] = 1;
-			if (*av[i] != '\0')
-				error("ls: illegal option -- ", *av[i]);
+			readoptsargs(av, opts, i);
 		}
 		else
 			return (i);

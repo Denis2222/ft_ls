@@ -32,7 +32,7 @@ void	setupls(t_ls *ls, char **av, int ac)
 	int start;
 
 	ls->opts = ft_memalloc('z');
-	start = readopts(ac, av, ls->opts);
+	start = readopts(ac, av, ls->opts, 0);
 	if (start == ac)
 		ls->args = addarg(&(ls->args), newarg("."));
 	while (start < ac)
