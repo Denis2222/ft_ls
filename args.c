@@ -22,6 +22,7 @@ t_arg	*newarg(char *str)
 	arg->mtime = 0;
 	arg->empty = 1;
 	arg->ent = NULL;
+	arg->read = 0;
 	arg->sub = NULL;
 	arg->next = NULL;
 	return (arg);

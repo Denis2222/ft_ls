@@ -51,6 +51,7 @@ typedef struct		s_arg
 	t_ent			*ent;
 	struct s_arg	*sub;
 	time_t			mtime;
+	int				read;
 	int				empty;
 	int				deny;
 	struct s_arg	*next;

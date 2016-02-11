@@ -12,28 +12,51 @@
 
 #include "ft_ls.h"
 
+int		symlinkexce(t_ls *ls, t_arg *arg, struct stat *filestat)
+{
+	if ((filestat->st_mode & S_IFMT) == S_IFLNK)
+	{
+		if((ft_strchr(arg->path, '/') &&
+			ft_strlen(ft_strrchr(arg->path, '/')) == 1) ||
+			!ls->opts['l'])
+		{
+			return (0);
+		}
+		else
+		{
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	listfiles(t_arg *arg, t_ls *ls)
 {
 	DIR				*dirfd;
 	struct stat		filestat;
 	t_ent			*file;
+	int				symlink;
 
-	dirfd = opendir(arg->path);
-	if (dirfd == NULL && errno != EACCES)
+	symlink = 0;
+	if (lstat(arg->path, &filestat) == 0)
 	{
-		if (lstat(arg->path, &filestat) == 0)
+		dirfd = opendir(arg->path);
+		if ((dirfd == NULL && errno != EACCES) ||
+			(symlink = symlinkexce(ls, arg, &filestat)))
 		{
 			file = newent(arg->path, &filestat);
 			ls->files = addent(&ls->files, file);
+			if (symlink)
+				arg->read = 1;
 		}
-		else
-		{
-			ft_putstr_fd("ls: ", 2);
-			perror(arg->path);
-		}
+		if (dirfd)
+			closedir(dirfd);
 	}
-	else if (errno == 0)
-		closedir(dirfd);
+	else
+	{
+		ft_putstr_fd("ls: ", 2);
+		perror(arg->path);
+	}
 }
 
 void	listdiranalyse(t_ls *ls, t_arg *arg, struct dirent *ent)
@@ -68,7 +91,7 @@ void	listdir(t_arg *arg, t_ls *ls)
 	struct stat		filestat;
 
 	dirfd = opendir(arg->path);
-	if (dirfd != NULL)
+	if (dirfd != NULL && !arg->read)
 	{
 		if (lstat(arg->path, &filestat) == 0)
 			arg->mtime = filestat.st_mtimespec.tv_sec;
@@ -91,7 +114,7 @@ void	timedir(t_arg *arg)
 	struct stat		filestat;
 
 	dirfd = opendir(arg->path);
-	if (dirfd != NULL)
+	if (dirfd != NULL && !arg->read)
 	{
 		if (lstat(arg->path, &filestat) == 0)
 			arg->mtime = filestat.st_mtimespec.tv_sec;

@@ -93,23 +93,26 @@ void	print_args(t_arg *args, t_ls *ls)
 	arg = args;
 	while (arg)
 	{
-		if (arg->deny)
-			print_arg_deny(arg, ls);
-		else if (arg->ent)
-			print_arg_ent(arg, ls);
-		else if (!arg->empty)
+		if (!arg->read)
 		{
-			if (ls->out > 0)
-				ft_putendl("");
-			if ((arglen(ls->args) > 1 || ls->out > 0))
+			if (arg->deny)
+				print_arg_deny(arg, ls);
+			else if (arg->ent)
+				print_arg_ent(arg, ls);
+			else if (!arg->empty)
 			{
-				ft_putstr(arg->path);
-				ft_putstr(":\n");
+				if (ls->out > 0)
+					ft_putendl("");
+				if ((arglen(ls->args) > 1 || ls->out > 0))
+				{
+					ft_putstr(arg->path);
+					ft_putstr(":\n");
+				}
 			}
+			if (arg->sub)
+				print_args(arg->sub, ls);
+			ls->out++;
 		}
-		if (arg->sub)
-			print_args(arg->sub, ls);
 		arg = arg->next;
-		ls->out++;
 	}
 }
