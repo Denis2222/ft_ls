@@ -27,6 +27,22 @@ t_ls	*newls(void)
 	return (ls);
 }
 
+void	setupopts(t_ls *ls)
+{
+	if (ls->opts['t'] && ls->opts['r'])
+		ls->sort_time = &ft_timeasc;
+	else if (ls->opts['t'])
+		ls->sort_time = &ft_timedec;
+	if (ls->opts['r'])
+		ls->sort_alpha = &ft_strdec;
+	if (ls->opts['f'])
+	{
+		ls->sort_alpha = NULL;
+		ls->sort_time = NULL;
+		ls->opts['a'] = 1;
+	}
+}
+
 void	setupls(t_ls *ls, char **av, int ac)
 {
 	int start;
@@ -43,10 +59,5 @@ void	setupls(t_ls *ls, char **av, int ac)
 		start++;
 	}
 	ls->nbarg = arglen(ls->args);
-	if (ls->opts['t'] && ls->opts['r'])
-		ls->sort_time = &ft_timeasc;
-	else if (ls->opts['t'])
-		ls->sort_time = &ft_timedec;
-	if (ls->opts['r'])
-		ls->sort_alpha = &ft_strdec;
+	setupopts(ls);
 }

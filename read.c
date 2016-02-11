@@ -38,7 +38,8 @@ void	readargs(t_arg *args, t_ls *ls)
 		arg = arg->next;
 	}
 	arg = args;
-	sortargs(arg, ls->sort_alpha);
+	if (ls->sort_alpha)
+		sortargs(arg, ls->sort_alpha);
 	if (ls->sort_time)
 		sortargstime(arg, ls->sort_time);
 	while (arg)

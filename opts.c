@@ -14,7 +14,7 @@
 
 void	readoptsargs(char **av, char *opts, int i)
 {
-	const char	args[6] = {'l', 'R', 'a', 'r', 't', '1'};
+	const char	args[7] = {'l', 'R', 'a', 'r', 't', 'f', '1'};
 
 	while (ft_strchr(args, *av[i]) && *av[i] != 0)
 	{

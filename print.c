@@ -64,7 +64,8 @@ void	print_arg_ent(t_arg *arg, t_ls *ls)
 		ft_putstr(arg->path);
 		ft_putstr(":\n");
 	}
-	sortents(arg->ent, ls->sort_alpha);
+	if (ls->sort_alpha)
+		sortents(arg->ent, ls->sort_alpha);
 	if (ls->sort_time)
 		sortentstime(arg->ent, ls->sort_time);
 	print_ents(arg->path, arg->ent, ls, 1);

@@ -18,7 +18,8 @@ int	main(int ac, char **av)
 
 	ls = newls();
 	setupls(ls, av, ac);
-	sortargs(ls->args, ls->sort_alpha);
+	if (ls->sort_alpha)
+		sortargs(ls->args, ls->sort_alpha);
 	readfiles(ls);
 	readargs(ls->args, ls);
 	return (0);
