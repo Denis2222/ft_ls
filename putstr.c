@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 18:47:09 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/10 20:16:17 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/11 16:26:57 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,10 @@ void	ft_putstrn(char *str, int n, int s)
 	}
 	ft_putstr(newstr);
 	ft_strdel(&newstr);
+}
+
+void	ft_putstrpathdir(char *path)
+{
+	ft_putstr(path);
+	ft_putstr(":\n");
 }

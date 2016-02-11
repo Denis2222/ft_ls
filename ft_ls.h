@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 16:20:12 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/10 22:00:21 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/11 16:37:26 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct		s_ent
 {
 	struct dirent	*dirent;
 	char			*name;
-	time_t			mtime;
 	struct s_ent	*next;
+	time_t			mtime;
 }					t_ent;
 
 typedef struct		s_arg
@@ -112,6 +112,7 @@ char				*majorminor(dev_t dev);
 void				printcolumns(t_ent *ent, t_column *col, char *path);
 void				ft_putstrfree(char *str);
 void				ft_putstrnfree(char *str, int n, int s);
+void				ft_putstrpathdir(char *path);
 void				seekcolumnsize(t_ent *ent, char *path, t_column *col);
 char				*modetostr(mode_t st_mode);
 

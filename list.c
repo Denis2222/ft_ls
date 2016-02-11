@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 18:21:46 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/02/10 17:18:57 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/02/11 16:20:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		symlinkexce(t_ls *ls, t_arg *arg, struct stat *filestat)
 {
 	if ((filestat->st_mode & S_IFMT) == S_IFLNK)
 	{
-		if((ft_strchr(arg->path, '/') &&
+		if ((ft_strchr(arg->path, '/') &&
 			ft_strlen(ft_strrchr(arg->path, '/')) == 1) ||
 			!ls->opts['l'])
 		{
