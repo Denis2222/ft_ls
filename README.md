@@ -1,6 +1,6 @@
 # ft_ls
 
-ls [-1Rlartf] recode
+ls [-1artlfR] recode
 
 TODO:
 - Align minor major
