@@ -1,7 +1,9 @@
 # ft_ls
 
-ls [-1artlfR] recode
+ls clone
 
-TODO:
-- Align minor major
-- remove extra / ex (-l /)
+```
+make
+```
+
+./ft_ls [-1artlfR]
