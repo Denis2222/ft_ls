@@ -6,4 +6,4 @@ ls clone
 make
 ```
 
-./ft_ls [-1artlfR]
+usage: ft_ls [-1Rlart] [file folder ...]
